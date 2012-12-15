@@ -13,7 +13,7 @@ Usage
 Author
 ------
 
-*  Benjamin Gleitzman [@gleitz](http://twitter.com/gleitz)
+*  Benjamin Gleitzman ([@gleitz](http://twitter.com/gleitz))
 
 Extra notes
 -----------
