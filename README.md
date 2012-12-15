@@ -1,14 +1,14 @@
-YASC: Yet Another Southwest Checkin
+Yet Another Choose Your Own Adventure
 ========================
 
-A Python script for automatically checking into Southwest flights. Works as of November 2012.
+Your digital host guides you through a deathly Choose Your Own Adventure game pirated from the Library of Congress.
+
 
 Usage:
 
-`checkin.py <FIRSTNAME> <LASTNAME> <CONFIRMATIONNUMBER> (<EMAIL>)`
+*   `python generate.py`
+*   `generate.navigate_story()`
 
 Extra notes:
 
-*   Requires the excellent [Requests library](http://docs.python-requests.org/)
-*   You may optionally provide an email address to send the boarding pass. If you do put your gmail username and password in a file called secret.txt separated by a double pipe character (e.g. `yourname@gmail.com||password`) and then run `chmod 600 secret.txt`
-*   Southwest likes to change their login process rather regularly so YMMV.
+*   Can be used with `telephone.ino` to upload the game to an Arduino
