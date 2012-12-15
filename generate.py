@@ -23,7 +23,7 @@ SAY_CMD = "say -v Serena -o /tmp/sub-{number}.aiff -f /tmp/{number}.txt && lame 
 # FESTIVAL_CLIENT_CMD = "festival_client --ttw --aucommand 'sox $FILE /tmp/{number}.wav tempo 1.05; lame /tmp/{number}.wav --tg Speech --preset mw-us {output_path}' /tmp/{number}.txt"
 
 # For voices using text2wave
-# SPEAK_CMD = '/Users/bgleitzman/Downloads/CSTR-HTSVoice-Library-ver0.99/build/festival/bin/text2wave -o /tmp/output.wav /tmp/speak.txt -eval "(voice_cstr_uk_nick_8hour_hts)"'
+# SPEAK_CMD = 'text2wave -o /tmp/output.wav /tmp/speak.txt -eval "(voice_cstr_uk_nick_8hour_hts)"'
 
 TEMPO_CMD = 'sox /tmp/output.wav /tmp/output2.wav tempo 1.1'
 LAME_CMD = 'lame /tmp/output2.wav --tg Speech --preset mw-us {0}'
