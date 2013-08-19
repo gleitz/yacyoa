@@ -200,8 +200,6 @@ In a moment a heavyset man wearing a dirty plaid shirt opens the door. His face 
 
 "My cousin Jane is trapped in the house and I'm worried about her. Would you please unlock it and help me find her?"
 
------------------------------------------------------Page 30-----------------------------------------------------
-
 "She should not be in there. Even I don't set foot in that house," Jervis says.
 
 "Why not?" you ask.
@@ -482,15 +480,9 @@ In a few minutes, Jane and Michael join you. They tell you they searched the hou
 
 The next morning, your visit with Jane and Michael is at an end. You have an hour or so before your bus leaves. You walk up the road again to Chimney Rock and stand looking at it for a long time. Then you see the burly, fat-faced caretaker approaching you, his huge dog with him, straining at the leash.
 
-As he approaches, you get ready to run, but he
+As he approaches, you get ready to run, but he calls out, "Don't be afraid. I am your friend. You ave freed me from the witch's curse!"
 
------------------------------------------------------Page 54-----------------------------------------------------
-
-calls out, "Don't be afraid. I am your friend. You ave freed me from the witch's curse!"
-
-"What do you mean? Where is Mrs. Bigley?"
-
-you ask.
+"What do you mean? Where is Mrs. Bigley?" you ask.
 
 "She died, yesterday," he replies, "for the last time."
 
@@ -530,9 +522,7 @@ If you stay and ask more questions, dial 100.
 
 -----------------------------------------------------Page 59-----------------------------------------------------
 
-As you search the cellar, you see a door with a hole in it, large enough for a cat to go through. You turn the knob and cautiously unbolt the door and open it. Shining your flashlight all around, you are amazed to see before you a cave filled with mummies and skeletons, adorned with shining jewels. You begin to understand the full horror of the witch's curse. Can you escape before you become er next victim?
-
------------------------------------------------------Page 60-----------------------------------------------------
+As you search the cellar, you see a door with a hole in it, large enough for a cat to go through. You turn the knob and cautiously unbolt the door and open it. Shining your flashlight all around, you are amazed to see before you a cave filled with mummies and skeletons, adorned with shining jewels. You begin to understand the full horror of the witch's curse. Can you escape before you become her next victim?
 
 You turn back in the direction from which you came. There, standing before you, is a tall woman with long bony arms. Her hands are outstretched toward you. You are struck with horror as you observe that her fingers are long steely claws.
 
@@ -688,11 +678,7 @@ You don't quite know why you say these words, but somehow you feel that the cat 
 
 The cat starts rapidly down the hall and then turns into a long corridor leading to another wing of the house as if it knows exactly where it is going. Finally, it stops in front of a closed door. You urn the handle of the door. It is unlocked. You lowly open the door and look into a small bedroom. It obviously has not been used for a long time. The shade has fallen from the window, and paint is peeling off the walls. The room is empty except for an old-fashioned brass bed frame. Cringing in a comer, shivering, with no place to run or hide, is a mouse, which looks up at you helplessly.
 
-The cat shows no interest in the mouse; instead, it stares at you -- its green eyes burning. You feel as
-
------------------------------------------------------Page 75-----------------------------------------------------
-
-though you must get away from the cat, and you drop the leash and run from the room, slamming the door behind you. You run down the stairs, where you find Lena, trembling with fear.
+The cat shows no interest in the mouse; instead, it stares at you -- its green eyes burning. You feel as though you must get away from the cat, and you drop the leash and run from the room, slamming the door behind you. You run down the stairs, where you find Lena, trembling with fear.
 
 "Where are Michael and the policeman?" you ask.
 
@@ -806,7 +792,7 @@ At that moment, a police car roars up the drive. Michael and a policeman jump ou
 
 Suddenly, you hear a crash. Jane has broken a Window in the living room. She jumps out into a juniper bush.
 
-The policeman walks up and stands looking at er for a long time.
+The policeman walks up and stands looking at her for a long time.
 
 "If this were an ordinary house," he says, "I'd arrest you for breaking and entering. But this is Chimney Rock. I'm glad you got out alive."
 
@@ -1004,7 +990,7 @@ You run out of the room and into a hall. Everything seems its right size again! 
 
 You run toward the cat. It looks as big as a tiger.
 
-As it springs, you realize that this is not a dream t all. For you, it is . . .
+As it springs, you realize that this is not a dream at all. For you, it is . . .
 
 The End
 
@@ -1120,12 +1106,12 @@ You were wondering the same thing yourself.
 
 If you decide to go to Jervis' cottage and ask what he meant about a reward, dial 111.
 
-If you decide to go back with Michael and Jane to their house and leave Melissa t Chimney Rock, dial 112.
+If you decide to go back with Michael and Jane to their house and leave Melissa to Chimney Rock, dial 112.
 
 If you decide to go back with Michael and Jane to their house and take Melissa along with you, dial 113.
 
 -----------------------------------------------------Page 118-----------------------------------------------------
-Ill I'm going to find out what he's talking about," you say to your cousins, and you let Melissa down and walk toward the cottage. Michael and Jane follow.
+I'm going to find out what he's talking about," you say to your cousins, and you let Melissa down and walk toward the cottage. Michael and Jane follow.
 
 For a while your knocking goes unanswered, but finally Jervis opens the door. At first he doesn't seem anxious to talk to you, but, when you persist in your questioning, he explains that he was promised a reward if he would stay in the cottage and take care of the cat until it chose a new owner.
 
