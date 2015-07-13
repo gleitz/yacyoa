@@ -35,7 +35,7 @@ long rotaryChangeTime = 0; // Time since last rotary change
 long resetChangeTime = 0; // Time since last reset change
 
 int dialHasFinishedRotatingAfterMs = 100; // ms to take dial to stop turning
-int stoppedDialingMs = 3000; // ms to take before reading entire number
+int stoppedDialingMs = 1500; // ms to take before reading entire number
 int debounceDelay = 10; // ms for dial reading to stabilize
 
 int currentGame = 0; // The current game being played
@@ -70,6 +70,8 @@ prog_char TRACK_VADER[] PROGMEM = "225";
 prog_char TRACK_CHUCK_BERRY[] PROGMEM = "226";
 prog_char TRACK_PYTHON[] PROGMEM = "227";
 prog_char TRACK_433[] PROGMEM = "228";
+prog_char TRACK_BOYZ[] PROGMEM = "229";
+prog_char TRACK_DUTCHIE[] PROGMEM = "230";
 PROGMEM const char *RANDOM_TRACKS[] = {TRACK_ADVENTURE, TRACK_CARELESS, TRACK_ELVISH, TRACK_WHACKEY, TRACK_JENNY, TRACK_GHOST, TRACK_B52, TRACK_777, TRACK_PICKETT, TRACK_MIKE_JONES, TRACK_LUDACRIS, TRACK_BEECHWOOD, TRACK_BIGELOW, TRACK_411, TRACK_SUBLIME, TRACK_TOOTS, TRACK_OPERATOR, TRACK_PENN, TRACK_808, TRACK_WHAT_IS_LOVE, TRACK_GOAL, TRACK_CHUCK_BERRY, TRACK_PYTHON};
 
 char string_buffer[30];
@@ -87,8 +89,10 @@ void setup() {
     randomSeed(analogRead(0)); // make sure the sequence is random
 }
 
+void(* resetFunc) (void) = 0;
+
 int getRandom() {
-    return random(int(RANDOM_TRACK_LENGTH + RANDOM_TRACK_LENGTH * 0.3));
+    return random(int(RANDOM_TRACK_LENGTH + RANDOM_TRACK_LENGTH * 0.2));
 }
 
 int stringToNumber(String thisString) {
@@ -136,8 +140,12 @@ String checkSpecialNumber(String number) {
         trackNumber = "211";
     } else if (number == "411") {
         trackNumber = "215";
+    } else if (number == "433") {
+        trackNumber = "228";
     } else if (number == "4390116") {
         trackNumber = "216";
+    } else if (number == "420") {
+        trackNumber = "230";
     } else if (number == "808") {
         trackNumber = "220";
     } else if (number == "707") {
@@ -150,6 +158,8 @@ String checkSpecialNumber(String number) {
         trackNumber = "225";
     } else if (number == "8314196668") {
         trackNumber = "229";
+    } else if (number == "0") {
+        trackNumber = "218";
     } else if (number == "69") {
         int randPick = random(0, 3);
         if (randPick == 0) {
@@ -269,6 +279,3 @@ void loop() {
     }
     resetLastState = resetReading;
 }
-
-
-
