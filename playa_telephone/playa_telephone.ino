@@ -5,6 +5,7 @@
  * Benjamin Gleitzman (gleitz@mit.edu)
  */
 
+#define __PROG_TYPES_COMPAT__
 
 #include <SPI.h>
 #include <avr/pgmspace.h>
@@ -14,6 +15,7 @@
 // MP3 Shield Library
 #include <SFEMP3Shield.h>
 
+SdFat sd;
 SFEMP3Shield MP3player;
 
 int count; // The number being dialed
@@ -35,44 +37,44 @@ long rotaryChangeTime = 0; // Time since last rotary change
 long resetChangeTime = 0; // Time since last reset change
 
 int dialHasFinishedRotatingAfterMs = 100; // ms to take dial to stop turning
-int stoppedDialingMs = 1500; // ms to take before reading entire number
+int stoppedDialingMs = 2000; // ms to take before reading entire number
 int debounceDelay = 10; // ms for dial reading to stabilize
 
 int currentGame = 0; // The current game being played
 
 // Tracks (stored in PROGMEM)
 // http://arduino.cc/en/Reference/PROGMEM
-prog_char TRACK_ADVENTURE[] PROGMEM = "1";
-prog_char TRACK_CARELESS[] PROGMEM = "202";
-prog_char TRACK_ELVISH[] PROGMEM = "203";
-prog_char TRACK_WHACKEY[] PROGMEM = "204";
-prog_char TRACK_JENNY[] PROGMEM = "205";
-prog_char TRACK_GHOST[] PROGMEM = "206";
-prog_char TRACK_BABY_BACK[] PROGMEM = "207";
-prog_char TRACK_B52[] PROGMEM = "208";
-prog_char TRACK_777[] PROGMEM = "209";
-prog_char TRACK_PICKETT[] PROGMEM = "210";
-prog_char TRACK_MIKE_JONES[] PROGMEM = "211";
-prog_char TRACK_LUDACRIS[] PROGMEM = "212";
-prog_char TRACK_BEECHWOOD[] PROGMEM = "213";
-prog_char TRACK_BIGELOW[] PROGMEM = "214";
-prog_char TRACK_411[] PROGMEM = "215";
-prog_char TRACK_SUBLIME[] PROGMEM = "216";
-prog_char TRACK_TOOTS[] PROGMEM = "217";
-prog_char TRACK_OPERATOR[] PROGMEM = "218";
-prog_char TRACK_PENN[] PROGMEM = "219";
-prog_char TRACK_808[] PROGMEM = "220";
-prog_char TRACK_DEELITE[] PROGMEM = "221";
-prog_char TRACK_WHAT_IS_LOVE[] PROGMEM = "222";
-prog_char TRACK_STAR_69[] PROGMEM = "223";
-prog_char TRACK_GOAL[] PROGMEM = "224";
-prog_char TRACK_VADER[] PROGMEM = "225";
-prog_char TRACK_CHUCK_BERRY[] PROGMEM = "226";
-prog_char TRACK_PYTHON[] PROGMEM = "227";
-prog_char TRACK_433[] PROGMEM = "228";
-prog_char TRACK_BOYZ[] PROGMEM = "229";
-prog_char TRACK_DUTCHIE[] PROGMEM = "230";
-PROGMEM const char *RANDOM_TRACKS[] = {TRACK_ADVENTURE, TRACK_CARELESS, TRACK_ELVISH, TRACK_WHACKEY, TRACK_JENNY, TRACK_GHOST, TRACK_B52, TRACK_777, TRACK_PICKETT, TRACK_MIKE_JONES, TRACK_LUDACRIS, TRACK_BEECHWOOD, TRACK_BIGELOW, TRACK_411, TRACK_SUBLIME, TRACK_TOOTS, TRACK_OPERATOR, TRACK_PENN, TRACK_808, TRACK_WHAT_IS_LOVE, TRACK_GOAL, TRACK_CHUCK_BERRY, TRACK_PYTHON};
+const prog_char TRACK_ADVENTURE[] PROGMEM = "1";
+const prog_char TRACK_CARELESS[] PROGMEM = "202";
+const prog_char TRACK_ELVISH[] PROGMEM = "203";
+const prog_char TRACK_WHACKEY[] PROGMEM = "204";
+const prog_char TRACK_JENNY[] PROGMEM = "205";
+const prog_char TRACK_GHOST[] PROGMEM = "206";
+const prog_char TRACK_BABY_BACK[] PROGMEM = "207";
+const prog_char TRACK_B52[] PROGMEM = "208";
+const prog_char TRACK_777[] PROGMEM = "209";
+const prog_char TRACK_PICKETT[] PROGMEM = "210";
+const prog_char TRACK_MIKE_JONES[] PROGMEM = "211";
+const prog_char TRACK_LUDACRIS[] PROGMEM = "212";
+const prog_char TRACK_BEECHWOOD[] PROGMEM = "213";
+const prog_char TRACK_BIGELOW[] PROGMEM = "214";
+const prog_char TRACK_411[] PROGMEM = "215";
+const prog_char TRACK_SUBLIME[] PROGMEM = "216";
+const prog_char TRACK_TOOTS[] PROGMEM = "217";
+const prog_char TRACK_OPERATOR[] PROGMEM = "218";
+const prog_char TRACK_PENN[] PROGMEM = "219";
+const prog_char TRACK_808[] PROGMEM = "220";
+const prog_char TRACK_DEELITE[] PROGMEM = "221";
+const prog_char TRACK_WHAT_IS_LOVE[] PROGMEM = "222";
+const prog_char TRACK_STAR_69[] PROGMEM = "223";
+const prog_char TRACK_GOAL[] PROGMEM = "224";
+const prog_char TRACK_VADER[] PROGMEM = "225";
+const prog_char TRACK_CHUCK_BERRY[] PROGMEM = "226";
+const prog_char TRACK_PYTHON[] PROGMEM = "227";
+const prog_char TRACK_433[] PROGMEM = "228";
+const prog_char TRACK_BOYZ[] PROGMEM = "229";
+const prog_char TRACK_DUTCHIE[] PROGMEM = "230";
+const char* const RANDOM_TRACKS[] PROGMEM = {TRACK_ADVENTURE, TRACK_CARELESS, TRACK_ELVISH, TRACK_WHACKEY, TRACK_JENNY, TRACK_GHOST, TRACK_B52, TRACK_777, TRACK_PICKETT, TRACK_MIKE_JONES, TRACK_LUDACRIS, TRACK_BEECHWOOD, TRACK_BIGELOW, TRACK_411, TRACK_SUBLIME, TRACK_TOOTS, TRACK_OPERATOR, TRACK_PENN, TRACK_808, TRACK_WHAT_IS_LOVE, TRACK_GOAL, TRACK_CHUCK_BERRY, TRACK_PYTHON};
 
 char string_buffer[30];
 
@@ -81,11 +83,22 @@ int RANDOM_TRACK_LENGTH = NUMITEMS(RANDOM_TRACKS);
 
 void setup() {
     pinMode(rotaryInput, INPUT);
-    Serial.begin(9600);
-    MP3player.begin();
+    Serial.begin(115200);
+
     Serial.print("Starting...");
+
+    if (!sd.begin(SD_SEL, SPI_FULL_SPEED)) {
+        sd.initErrorHalt();
+    }
+    if(!sd.chdir("/")) {
+        sd.errorHalt("sd.chdir");
+    }
+
+    MP3player.begin();
+
     Serial.println("done");
-    MP3player.SetVolume(2, 2);
+    MP3player.setVolume(2, 2);
+    MP3player.playTrack(200);
     randomSeed(analogRead(0)); // make sure the sequence is random
 }
 
@@ -188,7 +201,6 @@ void playAdventure() {
 void loop() {
     int rotaryReading = digitalRead(rotaryInput);
     int resetReading = digitalRead(resetInput);
-
     if ((millis() - rotaryChangeTime) > stoppedDialingMs) {
         if (totalNumberDialed) {
             Serial.println("Dialing: " + totalNumber);
