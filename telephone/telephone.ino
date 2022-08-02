@@ -1,14 +1,16 @@
 #include <SPI.h>
-
+#include <FreeStack.h>
 
 //Add the SdFat Libraries
 #include <SdFat.h>
-#include <SdFatUtil.h>
+
+//#include <SdFatUtil.h> 
 
 //and the MP3 Shield Library
-#include <SFEMP3Shield.h>
+#include <vs1053_SdFat.h>
 
-SFEMP3Shield MP3player;
+SdFat sd;
+vs1053 MP3player;
 
 byte result;
 
@@ -32,9 +34,26 @@ int debounceDelay = 10;
 void setup()
 {
     pinMode(in, INPUT);
-    Serial.begin(9600);
-    MP3player.begin();
-    MP3player.SetVolume(2, 2);
+    Serial.begin(115200);
+
+    //Initialize the SdCard.
+    if(!sd.begin(SD_SEL, SPI_FULL_SPEED)) sd.initErrorHalt();
+    // depending upon your SdCard environment, SPI_HAVE_SPEED may work better.
+    if(!sd.chdir("/")) sd.errorHalt("sd.chdir");
+
+    //Initialize the MP3 Player Shield
+    result = MP3player.begin();
+    //check result, see readme for error codes.
+    if(result != 0) {
+      Serial.print(F("Error code: "));
+      Serial.print(result);
+      Serial.println(F(" when trying to start MP3 player"));
+      if( result == 6 ) {
+        Serial.println(F("Warning: patch file not found, skipping.")); // can be removed for space, if needed.
+        Serial.println(F("Use the \"d\" command to verify SdCard can be read")); // can be removed for space, if needed.
+      }
+    }
+    MP3player.setVolume(2, 2);
     Serial.println("done");
 }
 

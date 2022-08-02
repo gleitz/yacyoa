@@ -16,7 +16,7 @@ import re
 PAGE_RE = re.compile('Page (\d+)')
 
 # For voices using Mac OSX's say command
-SAY_CMD = "say -v Serena -o /tmp/sub-{number}.aiff -f /tmp/{number}.txt && lame /tmp/sub-{number}.aiff --tg Speech --preset mw-us {output_path}"
+SAY_CMD = "say -v Serena -o /tmp/sub-{number}.aiff -f /tmp/{number}.txt -r 160 && lame /tmp/sub-{number}.aiff --tg Speech -b 160 -m m {output_path}"
 
 # For voices using festival_client
 # FESTIVAL_CLIENT_CMD = "festival_client --ttw --aucommand 'lame $FILE --tg Speech --preset mw-us {output_path}' /tmp/{number}.txt"
@@ -49,7 +49,7 @@ def parse_pages():
     return pages
 
 def speak_pages(pages):
-    for page_num, page in pages.iteritems():
+    for page_num, page in pages.items():
         if not page.strip():
             continue
         number = str(page_num).zfill(3)
@@ -57,8 +57,10 @@ def speak_pages(pages):
                        'output_path': SOUNDS_DIR + '/track' + number + '.mp3'}
 
         with open('/tmp/{number}.txt'.format(**output_data), 'w') as f:
-            f.write(page)
-        subprocess.Popen(['/bin/bash', '-c', SAY_CMD.format(**output_data)])
+            f.write('[[volm 1.0]] ' + page)
+        command = SAY_CMD.format(**output_data)
+        print(command)
+        subprocess.Popen(['/bin/bash', '-c', command])
 
 def play_file(number):
     number = str(number).zfill(3)
@@ -69,3 +71,8 @@ def navigate_story():
     while True:
         selection = input('Enter a page: ')
         play_file(selection)
+
+
+if __name__ == '__main__':
+    pages = parse_pages()
+    speak_pages(pages)

@@ -98,7 +98,7 @@ void setup() {
 
     Serial.println("done");
     MP3player.setVolume(2, 2);
-    MP3player.playTrack(200);
+    MP3player.playTrack(1); // change to 200 when you get the old sounds back
     randomSeed(analogRead(0)); // make sure the sequence is random
 }
 
@@ -283,7 +283,7 @@ void loop() {
                 Serial.println("Reset!");
                 MP3player.stopTrack();
                 currentGame = 0;
-                MP3player.playTrack(200);
+                MP3player.playTrack(1); // change to 200 when you get the old sounds back
             } else {
                 MP3player.stopTrack();
             }
