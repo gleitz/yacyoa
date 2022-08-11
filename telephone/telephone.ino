@@ -4,8 +4,6 @@
 //Add the SdFat Libraries
 #include <SdFat.h>
 
-//#include <SdFatUtil.h> 
-
 //and the MP3 Shield Library
 #include <vs1053_SdFat.h>
 
