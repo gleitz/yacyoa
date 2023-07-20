@@ -7,8 +7,6 @@
 #
 ##################################################
 
-import time
-import shlex
 import os
 import subprocess
 import re
@@ -31,9 +29,10 @@ AFPLAY_CMD = 'afplay {0}'
 
 SOUNDS_DIR = os.path.join(os.path.dirname(__file__), 'sounds')
 
+
 def parse_pages():
     pages = {}
-    with open('chimney-rock.txt', 'r') as f:
+    with open('chimney-rock-edit.txt', 'r') as f:
         current_lines = ''
         current_page = False
         for line in f.readlines():
@@ -44,9 +43,8 @@ def parse_pages():
                 current_page = int(PAGE_RE.findall(line)[0]) - 7
             else:
                 current_lines += line
-
-
     return pages
+
 
 def speak_pages(pages):
     for page_num, page in pages.items():
@@ -62,9 +60,11 @@ def speak_pages(pages):
         print(command)
         subprocess.Popen(['/bin/bash', '-c', command])
 
+
 def play_file(number):
     number = str(number).zfill(3)
     os.system(AFPLAY_CMD.format('sounds/track' + number + '.mp3'))
+
 
 def navigate_story():
     play_file(2)
