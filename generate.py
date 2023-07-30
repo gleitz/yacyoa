@@ -11,10 +11,17 @@ import os
 import subprocess
 import re
 
+from google_tts import synthesize
+
 PAGE_RE = re.compile('Page (\d+)')
+
+VOICE = 'en-GB-News-H'
 
 # For voices using Mac OSX's say command
 SAY_CMD = "say -v Serena -o /tmp/sub-{number}.aiff -f /tmp/{number}.txt -r 160 && lame /tmp/sub-{number}.aiff --tg Speech -b 160 -m m {output_path}"
+
+# To make the main voice
+# python google_tts.py --voice en-GB-News-H --rate 1.1 --text "Thank you for calling DEFCON Online. All representatives are currently assisting other callers. If you know your department's extension, please try dialing it at any time."
 
 # For voices using festival_client
 # FESTIVAL_CLIENT_CMD = "festival_client --ttw --aucommand 'lame $FILE --tg Speech --preset mw-us {output_path}' /tmp/{number}.txt"
@@ -27,7 +34,7 @@ TEMPO_CMD = 'sox /tmp/output.wav /tmp/output2.wav tempo 1.1'
 LAME_CMD = 'lame /tmp/output2.wav --tg Speech --preset mw-us {0}'
 AFPLAY_CMD = 'afplay {0}'
 
-SOUNDS_DIR = os.path.join(os.path.dirname(__file__), 'sounds')
+SOUNDS_DIR = os.path.join(os.path.dirname(__file__), f'sounds_{VOICE}')
 
 
 def parse_pages():
@@ -54,11 +61,15 @@ def speak_pages(pages):
         output_data = {'number': number,
                        'output_path': SOUNDS_DIR + '/track' + number + '.mp3'}
 
-        with open('/tmp/{number}.txt'.format(**output_data), 'w') as f:
-            f.write('[[volm 1.0]] ' + page)
-        command = SAY_CMD.format(**output_data)
-        print(command)
-        subprocess.Popen(['/bin/bash', '-c', command])
+        # with open('/tmp/{number}.txt'.format(**output_data), 'w') as f:
+            # f.write('[[volm 1.0]] ' + page)
+        # command = SAY_CMD.format(**output_data)
+        # print(command)
+        # subprocess.Popen(['/bin/bash', '-c', command])
+
+        audio_content = synthesize(page, VOICE, speakingRate=1.1, returnAudio=True, volume_gain_db=16.0)
+        with open(output_data['output_path'], 'wb') as f:
+            f.write(audio_content)
 
 
 def play_file(number):
@@ -74,5 +85,7 @@ def navigate_story():
 
 
 if __name__ == '__main__':
+    if not os.path.exists(SOUNDS_DIR):
+        os.makedirs(SOUNDS_DIR)
     pages = parse_pages()
     speak_pages(pages)
