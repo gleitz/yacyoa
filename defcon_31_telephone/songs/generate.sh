@@ -16,10 +16,21 @@ do
    TRACKS_ARR+=(${TRACK_NAME});
    echo "const char ${TRACK_NAME}[] PROGMEM = \"${PADDED_COUNTER}\";" | tee -a songs.txt;
    FILENAME="track${PADDED_COUNTER}.mp3";
-   sox "$file" --norm=-0.1 -C 192 -c 1 "converted/$FILENAME" -V;
+
+   # Check if the file already exists in the "raw" directory
+   if [ -f "raw/$file" ]; then
+        # If it does, simply copy the file
+        cp "raw/$file" "converted/$FILENAME"
+   else
+        # If not, process the file and place it in the "raw" directory
+        sox "$file" --norm=-0.1 -C 192 -c 1 "raw/$file" -V;
+        cp "raw/$file" "converted/$FILENAME"
+   fi
+
    ((COUNTER++));
 done
-echo "const char* const RANDOM_TRACKS[] PROGMEM = { $(join_by ", " "${TRACKS_ARR[@]}") };" | tee -a songs.txt
+# might not want this next line because not all tracks should be included?
+# echo "const char* const RANDOM_TRACKS[] PROGMEM = { $(join_by ", " "${TRACKS_ARR[@]}") };" | tee -a songs.txt
 
 # Define the start and end markers
 START="// START OF GENERATED SECTION"
@@ -27,7 +38,7 @@ END="// END OF GENERATED SECTION"
 
 # Define the input and output files
 INPUT="songs.txt"
-OUTPUT="../defcon_telephone.ino"
+OUTPUT="../defcon_31_telephone.ino"
 
 # Create a temporary file
 TEMP=$(mktemp)

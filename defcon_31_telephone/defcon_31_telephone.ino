@@ -27,7 +27,7 @@ vs1053 MP3player;
 
 byte result;
 
-int tmpCounter = 0; // The number being dialed
+// int tmpCounter = 0; // Used for knowing when to print periodic values
 
 int count; // The number being dialed
 int resetCount; // The reset number being dialed
@@ -101,82 +101,169 @@ const char TRACK_DEFCON_INTRO[] PROGMEM = "122";
 //const char* const RANDOM_TRACKS[] PROGMEM = {TRACK_ADVENTURE, TRACK_CARELESS, TRACK_ELVISH, TRACK_WHACKEY, TRACK_JENNY, TRACK_GHOST, TRACK_B52, TRACK_777, TRACK_PICKETT, TRACK_MIKE_JONES, TRACK_LUDACRIS, TRACK_BEECHWOOD, TRACK_BIGELOW, TRACK_411, TRACK_SUBLIME, TRACK_TOOTS, TRACK_OPERATOR, TRACK_PENN, TRACK_808, TRACK_WHAT_IS_LOVE, TRACK_GOAL, TRACK_CHUCK_BERRY, TRACK_PYTHON};
 
 // START OF GENERATED SECTION
-const char TRACK_2_LIVE_CREW_ME_SO_HORNY[] PROGMEM = "123";
-const char TRACK_5_7_0_5[] PROGMEM = "124";
-const char TRACK_6060842[] PROGMEM = "125";
-const char TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER[] PROGMEM = "126";
-const char TRACK_853_5937[] PROGMEM = "127";
-const char TRACK_AREA_CODES_FEAT_NATE_DOGG_BY_LUDACRIS_CRATE_CLASSICS_RAP[] PROGMEM = "128";
-const char TRACK_BABY_GOT_BACK[] PROGMEM = "129";
-const char TRACK_BACKSTREET_BOYS_THE_CALL_OFFICIAL_HD_VIDEO[] PROGMEM = "130";
-const char TRACK_BECK_CELLPHONES_DEAD[] PROGMEM = "131";
-const char TRACK_BLONDIE_HANGING_ON_THE_TELEPHONE[] PROGMEM = "132";
-const char TRACK_BLONDIE_CALL_ME[] PROGMEM = "133";
-const char TRACK_CAKE_NEVER_THERE[] PROGMEM = "134";
-const char TRACK_CALL_ME_BACK_AGAIN[] PROGMEM = "135";
-const char TRACK_CALL_ME[] PROGMEM = "136";
-const char TRACK_CALL_ME_MR_TELEPHONE_CHEYNE_1985_1_USA_DANCE_CHARTS[] PROGMEM = "137";
-const char TRACK_CARELESS_WHISPER[] PROGMEM = "138";
-const char TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE[] PROGMEM = "139";
-const char TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO[] PROGMEM = "140";
-const char TRACK_DRAKE_HOTLINE_BLING_LYRICS[] PROGMEM = "141";
-const char TRACK_ERIC_PRYDZ_CALL_ON_ME[] PROGMEM = "142";
-const char TRACK_GLENN_MILLER_PENNSYLVANIA_6_5000_1940_DIGITALLY_REMASTERED[] PROGMEM = "143";
-const char TRACK_GO_DOWN_TOGETHER[] PROGMEM = "144";
-const char TRACK_HACKER_MUSIC[] PROGMEM = "145";
-const char TRACK_HAD_TO_PHONE_YA_REMASTERED_2000[] PROGMEM = "146";
-const char TRACK_HARD_TO_EXPLAIN[] PROGMEM = "147";
-const char TRACK_HITS_FROM_THE_BONG[] PROGMEM = "148";
-const char TRACK_HOW_COME_U_DONT_CALL_ME_ANYMORE[] PROGMEM = "149";
-const char TRACK_I_JUST_CALLED_TO_SAY_I_LOVE_YOU[] PROGMEM = "150";
-const char TRACK_ITS_THE_MUSIC[] PROGMEM = "151";
-const char TRACK_JUNIOR_VASQUEZ_IF_MADONNA_CALLS[] PROGMEM = "152";
-const char TRACK_JUST_BE_A_MAN_ABOUT_IT_RADIO_EDIT[] PROGMEM = "153";
-const char TRACK_KEHA_STEPHEN[] PROGMEM = "154";
-const char TRACK_KRAFTWERK_THE_TELEPHONE_CALL[] PROGMEM = "155";
-const char TRACK_LITTLE_MIX_HOW_YA_DOIN_FT_MISSY_ELLIOTT[] PROGMEM = "156";
-const char TRACK_LONG_DISTANCE_RUNAROUND_2008_REMASTER[] PROGMEM = "157";
-const char TRACK_LOVE_ON_THE_TELEPHONE[] PROGMEM = "158";
-const char TRACK_MARY_WELLS_OPERATOR[] PROGMEM = "159";
-const char TRACK_MABEL_DONT_CALL_ME_UP_OFFICIAL_VIDEO[] PROGMEM = "160";
-const char TRACK_MIKE_JONES_BACK_THEN[] PROGMEM = "161";
-const char TRACK_NEW_EDITION_MR_TELEPHONE_MAN_OFFICIAL_MUSIC_VIDEO[] PROGMEM = "162";
-const char TRACK_OPERATOR_JIM_CROCE[] PROGMEM = "163";
-const char TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG[] PROGMEM = "164";
-const char TRACK_PICK_UP_THE_PHONE[] PROGMEM = "165";
-const char TRACK_POPPY_MOSHI_MOSHI_OFFICIAL_VIDEO[] PROGMEM = "166";
-const char TRACK_PRIMITIVE_RADIO_GODS_STANDING_OUTSIDE_A_BROKEN_PHONE_BOOTH_WITH_MONEY_IN_MY_HAND_1996[] PROGMEM = "167";
-const char TRACK_R_E_M_STAR_69_MONSTER_REMASTERED[] PROGMEM = "168";
-const char TRACK_RAFFI_BANANAPHONE[] PROGMEM = "169";
-const char TRACK_RAPP_SNITCH_KNISHES[] PROGMEM = "170";
-const char TRACK_RESISTOR_CORDLESS_PHONE[] PROGMEM = "171";
-const char TRACK_RING_RING_ENGLISH_VERSION[] PROGMEM = "172";
-const char TRACK_SALT_SHAKER[] PROGMEM = "173";
-const char TRACK_SMOOTH_OPERATOR_REMASTERED[] PROGMEM = "174";
-const char TRACK_SOULJA_BOY_TELLEM_FT_SAMMIE_KISS_ME_THRU_THE_PHONE_OFFICIAL_VIDEO[] PROGMEM = "175";
-const char TRACK_SPIDERWEBS[] PROGMEM = "176";
-const char TRACK_STEELY_DAN_RIKKI_DONT_LOSE_THAT_NUMBER[] PROGMEM = "177";
-const char TRACK_SUBLIME_DONT_PUSH[] PROGMEM = "178";
-const char TRACK_THE_ORLONS_DONT_HANG_UP[] PROGMEM = "179";
-const char TRACK_TELEPHONE[] PROGMEM = "180";
-const char TRACK_THE_BIG_BOPPER_CHANTILLY_LACE_HQ[] PROGMEM = "181";
-const char TRACK_THE_CALL_BACKSTREET_BOYS_FEAT_THE_NEPTUNES_REMIX[] PROGMEM = "182";
-const char TRACK_THE_KINKS_PARTY_LINE_HQ[] PROGMEM = "183";
-const char TRACK_THE_MARVELETTES_BEECHWOOD_4_5789[] PROGMEM = "184";
-const char TRACK_THE_TIME_777_9311_SINGLE_VERSION[] PROGMEM = "185";
-const char TRACK_THEME_SONG_KIM_POSSIBLE_DISNEY_CHANNEL[] PROGMEM = "186";
-const char TRACK_THIZZLE_DANCE[] PROGMEM = "187";
-const char TRACK_TODD_RUNDGREN_HELLO_ITS_ME_1972[] PROGMEM = "188";
-const char TRACK_TOMMY_TUTONE_867_5309JENNY[] PROGMEM = "189";
-const char TRACK_TONY_BOOTH_LONESOME_7_7203[] PROGMEM = "190";
-const char TRACK_VIDEO_PHONE[] PROGMEM = "191";
-const char TRACK_VILLAGE_PEOPLE_SEX_OVER_THE_PHONE_OFFICIAL_MUSIC_VIDEO_1985[] PROGMEM = "192";
-const char TRACK_WOO_WOO[] PROGMEM = "193";
-const char TRACK_YOUNG_LUST[] PROGMEM = "194";
-const char TRACK_R0T0RR00T3R_BLOW_THE_WHISTLE_BAD_CUT[] PROGMEM = "195";
-const char TRACK_SKYY_CALL_ME_SINGLE_VERSION[] PROGMEM = "196";
-const char* const RANDOM_TRACKS[] PROGMEM = { TRACK_2_LIVE_CREW_ME_SO_HORNY, TRACK_5_7_0_5, TRACK_6060842, TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER, TRACK_853_5937, TRACK_AREA_CODES_FEAT_NATE_DOGG_BY_LUDACRIS_CRATE_CLASSICS_RAP, TRACK_BABY_GOT_BACK, TRACK_BACKSTREET_BOYS_THE_CALL_OFFICIAL_HD_VIDEO, TRACK_BECK_CELLPHONES_DEAD, TRACK_BLONDIE_HANGING_ON_THE_TELEPHONE, TRACK_BLONDIE_CALL_ME, TRACK_CAKE_NEVER_THERE, TRACK_CALL_ME_BACK_AGAIN, TRACK_CALL_ME, TRACK_CALL_ME_MR_TELEPHONE_CHEYNE_1985_1_USA_DANCE_CHARTS, TRACK_CARELESS_WHISPER, TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE, TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO, TRACK_DRAKE_HOTLINE_BLING_LYRICS, TRACK_ERIC_PRYDZ_CALL_ON_ME, TRACK_GLENN_MILLER_PENNSYLVANIA_6_5000_1940_DIGITALLY_REMASTERED, TRACK_GO_DOWN_TOGETHER, TRACK_HACKER_MUSIC, TRACK_HAD_TO_PHONE_YA_REMASTERED_2000, TRACK_HARD_TO_EXPLAIN, TRACK_HITS_FROM_THE_BONG, TRACK_HOW_COME_U_DONT_CALL_ME_ANYMORE, TRACK_I_JUST_CALLED_TO_SAY_I_LOVE_YOU, TRACK_ITS_THE_MUSIC, TRACK_JUNIOR_VASQUEZ_IF_MADONNA_CALLS, TRACK_JUST_BE_A_MAN_ABOUT_IT_RADIO_EDIT, TRACK_KEHA_STEPHEN, TRACK_KRAFTWERK_THE_TELEPHONE_CALL, TRACK_LITTLE_MIX_HOW_YA_DOIN_FT_MISSY_ELLIOTT, TRACK_LONG_DISTANCE_RUNAROUND_2008_REMASTER, TRACK_LOVE_ON_THE_TELEPHONE, TRACK_MARY_WELLS_OPERATOR, TRACK_MABEL_DONT_CALL_ME_UP_OFFICIAL_VIDEO, TRACK_MIKE_JONES_BACK_THEN, TRACK_NEW_EDITION_MR_TELEPHONE_MAN_OFFICIAL_MUSIC_VIDEO, TRACK_OPERATOR_JIM_CROCE, TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG, TRACK_PICK_UP_THE_PHONE, TRACK_POPPY_MOSHI_MOSHI_OFFICIAL_VIDEO, TRACK_PRIMITIVE_RADIO_GODS_STANDING_OUTSIDE_A_BROKEN_PHONE_BOOTH_WITH_MONEY_IN_MY_HAND_1996, TRACK_R_E_M_STAR_69_MONSTER_REMASTERED, TRACK_RAFFI_BANANAPHONE, TRACK_RAPP_SNITCH_KNISHES, TRACK_RESISTOR_CORDLESS_PHONE, TRACK_RING_RING_ENGLISH_VERSION, TRACK_SALT_SHAKER, TRACK_SMOOTH_OPERATOR_REMASTERED, TRACK_SOULJA_BOY_TELLEM_FT_SAMMIE_KISS_ME_THRU_THE_PHONE_OFFICIAL_VIDEO, TRACK_SPIDERWEBS, TRACK_STEELY_DAN_RIKKI_DONT_LOSE_THAT_NUMBER, TRACK_SUBLIME_DONT_PUSH, TRACK_THE_ORLONS_DONT_HANG_UP, TRACK_TELEPHONE, TRACK_THE_BIG_BOPPER_CHANTILLY_LACE_HQ, TRACK_THE_CALL_BACKSTREET_BOYS_FEAT_THE_NEPTUNES_REMIX, TRACK_THE_KINKS_PARTY_LINE_HQ, TRACK_THE_MARVELETTES_BEECHWOOD_4_5789, TRACK_THE_TIME_777_9311_SINGLE_VERSION, TRACK_THEME_SONG_KIM_POSSIBLE_DISNEY_CHANNEL, TRACK_THIZZLE_DANCE, TRACK_TODD_RUNDGREN_HELLO_ITS_ME_1972, TRACK_TOMMY_TUTONE_867_5309JENNY, TRACK_TONY_BOOTH_LONESOME_7_7203, TRACK_VIDEO_PHONE, TRACK_VILLAGE_PEOPLE_SEX_OVER_THE_PHONE_OFFICIAL_MUSIC_VIDEO_1985, TRACK_WOO_WOO, TRACK_YOUNG_LUST, TRACK_R0T0RR00T3R_BLOW_THE_WHISTLE_BAD_CUT, TRACK_SKYY_CALL_ME_SINGLE_VERSION };
+const char TRACK_10_10_220_CHRISTOPHER_LLOYD_TAXI_COMMERCIAL_1999[] PROGMEM = "123";
+const char TRACK_2_LIVE_CREW_ME_SO_HORNY[] PROGMEM = "124";
+const char TRACK_5_7_0_5[] PROGMEM = "125";
+const char TRACK_6060842[] PROGMEM = "126";
+const char TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER[] PROGMEM = "127";
+const char TRACK_853_5937[] PROGMEM = "128";
+const char TRACK_AREA_CODES_FEAT_NATE_DOGG_BY_LUDACRIS_CRATE_CLASSICS_RAP[] PROGMEM = "129";
+const char TRACK_BABY_GOT_BACK[] PROGMEM = "130";
+const char TRACK_BACKSTREET_BOYS_THE_CALL_OFFICIAL_HD_VIDEO[] PROGMEM = "131";
+const char TRACK_BALLAD_OF_THE_20TH_MAINE[] PROGMEM = "132";
+const char TRACK_BECK_CELLPHONES_DEAD[] PROGMEM = "133";
+const char TRACK_BLONDIE_HANGING_ON_THE_TELEPHONE[] PROGMEM = "134";
+const char TRACK_BLONDIE_CALL_ME[] PROGMEM = "135";
+const char TRACK_CAKE_NEVER_THERE[] PROGMEM = "136";
+const char TRACK_CALL_ME_BACK_AGAIN[] PROGMEM = "137";
+const char TRACK_CALL_ME[] PROGMEM = "138";
+const char TRACK_CALL_ME_MR_TELEPHONE_CHEYNE_1985_1_USA_DANCE_CHARTS[] PROGMEM = "139";
+const char TRACK_CARELESS_WHISPER[] PROGMEM = "140";
+const char TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE[] PROGMEM = "141";
+const char TRACK_CISCO_DEFAULT_HOLD_MUSIC_HQ_MONO_AUDIO_OPUS_NUMBER_1[] PROGMEM = "142";
+const char TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO[] PROGMEM = "143";
+const char TRACK_DRAKE_HOTLINE_BLING_LYRICS[] PROGMEM = "144";
+const char TRACK_ERIC_PRYDZ_CALL_ON_ME[] PROGMEM = "145";
+const char TRACK_GLENN_MILLER_PENNSYLVANIA_6_5000_1940_DIGITALLY_REMASTERED[] PROGMEM = "146";
+const char TRACK_GO_DOWN_TOGETHER[] PROGMEM = "147";
+const char TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT[] PROGMEM = "148";
+const char TRACK_HACKER_MUSIC[] PROGMEM = "149";
+const char TRACK_HAD_TO_PHONE_YA_REMASTERED_2000[] PROGMEM = "150";
+const char TRACK_HARD_TO_EXPLAIN[] PROGMEM = "151";
+const char TRACK_HITS_FROM_THE_BONG[] PROGMEM = "152";
+const char TRACK_HOW_COME_U_DONT_CALL_ME_ANYMORE[] PROGMEM = "153";
+const char TRACK_I_JUST_CALLED_TO_SAY_I_LOVE_YOU[] PROGMEM = "154";
+const char TRACK_ITS_THE_MUSIC[] PROGMEM = "155";
+const char TRACK_JUNIOR_VASQUEZ_IF_MADONNA_CALLS[] PROGMEM = "156";
+const char TRACK_JUST_BE_A_MAN_ABOUT_IT_RADIO_EDIT[] PROGMEM = "157";
+const char TRACK_KEHA_STEPHEN[] PROGMEM = "158";
+const char TRACK_KRAFTWERK_THE_TELEPHONE_CALL[] PROGMEM = "159";
+const char TRACK_LITTLE_MIX_HOW_YA_DOIN_FT_MISSY_ELLIOTT[] PROGMEM = "160";
+const char TRACK_LONG_DISTANCE_RUNAROUND_2008_REMASTER[] PROGMEM = "161";
+const char TRACK_LOVE_ON_THE_TELEPHONE[] PROGMEM = "162";
+const char TRACK_MARY_WELLS_OPERATOR[] PROGMEM = "163";
+const char TRACK_MABEL_DONT_CALL_ME_UP_OFFICIAL_VIDEO[] PROGMEM = "164";
+const char TRACK_MIKE_JONES_BACK_THEN[] PROGMEM = "165";
+const char TRACK_NEW_EDITION_MR_TELEPHONE_MAN_OFFICIAL_MUSIC_VIDEO[] PROGMEM = "166";
+const char TRACK_OPERATOR_JIM_CROCE[] PROGMEM = "167";
+const char TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG[] PROGMEM = "168";
+const char TRACK_PICK_UP_THE_PHONE[] PROGMEM = "169";
+const char TRACK_POPPY_MOSHI_MOSHI_OFFICIAL_VIDEO[] PROGMEM = "170";
+const char TRACK_PRIMITIVE_RADIO_GODS_STANDING_OUTSIDE_A_BROKEN_PHONE_BOOTH_WITH_MONEY_IN_MY_HAND_1996[] PROGMEM = "171";
+const char TRACK_R_E_M_STAR_69_MONSTER_REMASTERED[] PROGMEM = "172";
+const char TRACK_RAFFI_BANANAPHONE[] PROGMEM = "173";
+const char TRACK_RAPP_SNITCH_KNISHES[] PROGMEM = "174";
+const char TRACK_RESISTOR_CORDLESS_PHONE[] PROGMEM = "175";
+const char TRACK_RING_RING_ENGLISH_VERSION[] PROGMEM = "176";
+const char TRACK_SALT_SHAKER[] PROGMEM = "177";
+const char TRACK_SMOOTH_OPERATOR_REMASTERED[] PROGMEM = "178";
+const char TRACK_SOULJA_BOY_TELLEM_FT_SAMMIE_KISS_ME_THRU_THE_PHONE_OFFICIAL_VIDEO[] PROGMEM = "179";
+const char TRACK_SPIDERWEBS[] PROGMEM = "180";
+const char TRACK_STEELY_DAN_RIKKI_DONT_LOSE_THAT_NUMBER[] PROGMEM = "181";
+const char TRACK_SUBLIME_DONT_PUSH[] PROGMEM = "182";
+const char TRACK_THE_ORLONS_DONT_HANG_UP[] PROGMEM = "183";
+const char TRACK_TELEPHONE[] PROGMEM = "184";
+const char TRACK_THE_BIG_BOPPER_CHANTILLY_LACE_HQ[] PROGMEM = "185";
+const char TRACK_THE_CALL_BACKSTREET_BOYS_FEAT_THE_NEPTUNES_REMIX[] PROGMEM = "186";
+const char TRACK_THE_DEVIL_WENT_DOWN_TO_GEORGIA[] PROGMEM = "187";
+const char TRACK_THE_KINKS_PARTY_LINE_HQ[] PROGMEM = "188";
+const char TRACK_THE_MARVELETTES_BEECHWOOD_4_5789[] PROGMEM = "189";
+const char TRACK_THE_TIME_777_9311_SINGLE_VERSION[] PROGMEM = "190";
+const char TRACK_THEME_SONG_KIM_POSSIBLE_DISNEY_CHANNEL[] PROGMEM = "191";
+const char TRACK_THIZZLE_DANCE[] PROGMEM = "192";
+const char TRACK_TIME_5551212[] PROGMEM = "193";
+const char TRACK_TODD_RUNDGREN_HELLO_ITS_ME_1972[] PROGMEM = "194";
+const char TRACK_TOMMY_TUTONE_867_5309JENNY[] PROGMEM = "195";
+const char TRACK_TONY_BOOTH_LONESOME_7_7203[] PROGMEM = "196";
+const char TRACK_VIDEO_PHONE[] PROGMEM = "197";
+const char TRACK_VILLAGE_PEOPLE_SEX_OVER_THE_PHONE_OFFICIAL_MUSIC_VIDEO_1985[] PROGMEM = "198";
+const char TRACK_WOO_WOO[] PROGMEM = "199";
+const char TRACK_WEIRD_AL_YANKOVIC_WHITE_NERDY_OFFICIAL_4K_VIDEO[] PROGMEM = "200";
+const char TRACK_YOUNG_LUST[] PROGMEM = "201";
+const char TRACK_R0T0RR00T3R_BLOW_THE_WHISTLE_BAD_CUT[] PROGMEM = "202";
+const char TRACK_SKYY_CALL_ME_SINGLE_VERSION[] PROGMEM = "203";
 // END OF GENERATED SECTION
+
+const char* const RANDOM_TRACKS[] PROGMEM = {
+  TRACK_DEFCON_INTRO, // 1
+	TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE,
+	TRACK_RAFFI_BANANAPHONE,
+	TRACK_CARELESS_WHISPER,
+	TRACK_5_7_0_5,
+	TRACK_6060842,
+	TRACK_THE_TIME_777_9311_SINGLE_VERSION,
+	TRACK_853_5937,
+	TRACK_SPIDERWEBS, // 9
+	TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER, // 0
+
+	TRACK_GO_DOWN_TOGETHER,
+	TRACK_CAKE_NEVER_THERE,
+	TRACK_BLONDIE_CALL_ME,
+	TRACK_BACKSTREET_BOYS_THE_CALL_OFFICIAL_HD_VIDEO,
+	TRACK_HARD_TO_EXPLAIN,
+	TRACK_KRAFTWERK_THE_TELEPHONE_CALL,
+	TRACK_PICK_UP_THE_PHONE,
+	TRACK_HOW_COME_U_DONT_CALL_ME_ANYMORE,
+	TRACK_NEW_EDITION_MR_TELEPHONE_MAN_OFFICIAL_MUSIC_VIDEO,
+	TRACK_RING_RING_ENGLISH_VERSION,
+	TRACK_PRIMITIVE_RADIO_GODS_STANDING_OUTSIDE_A_BROKEN_PHONE_BOOTH_WITH_MONEY_IN_MY_HAND_1996,
+	TRACK_KEHA_STEPHEN,
+	TRACK_TELEPHONE,
+	TRACK_HACKER_MUSIC,
+	TRACK_CALL_ME_BACK_AGAIN,
+	TRACK_THE_BIG_BOPPER_CHANTILLY_LACE_HQ,
+	TRACK_MARY_WELLS_OPERATOR,
+	TRACK_YOUNG_LUST,
+	TRACK_CALL_ME,
+	TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO,
+	TRACK_THE_CALL_BACKSTREET_BOYS_FEAT_THE_NEPTUNES_REMIX,
+	TRACK_SKYY_CALL_ME_SINGLE_VERSION,
+	TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG,
+	TRACK_OPERATOR_JIM_CROCE,
+	TRACK_RAPP_SNITCH_KNISHES,
+	TRACK_SMOOTH_OPERATOR_REMASTERED,
+	TRACK_LITTLE_MIX_HOW_YA_DOIN_FT_MISSY_ELLIOTT,
+	TRACK_POPPY_MOSHI_MOSHI_OFFICIAL_VIDEO,
+	TRACK_VIDEO_PHONE,
+	TRACK_HAD_TO_PHONE_YA_REMASTERED_2000,
+	TRACK_THE_MARVELETTES_BEECHWOOD_4_5789,
+	TRACK_BLONDIE_HANGING_ON_THE_TELEPHONE,
+	TRACK_R_E_M_STAR_69_MONSTER_REMASTERED,
+	TRACK_GLENN_MILLER_PENNSYLVANIA_6_5000_1940_DIGITALLY_REMASTERED,
+	TRACK_LOVE_ON_THE_TELEPHONE,
+	TRACK_HITS_FROM_THE_BONG,
+	TRACK_MABEL_DONT_CALL_ME_UP_OFFICIAL_VIDEO,
+	TRACK_ITS_THE_MUSIC,
+	TRACK_I_JUST_CALLED_TO_SAY_I_LOVE_YOU,
+	TRACK_THE_KINKS_PARTY_LINE_HQ,
+	TRACK_LONG_DISTANCE_RUNAROUND_2008_REMASTER,
+	TRACK_THEME_SONG_KIM_POSSIBLE_DISNEY_CHANNEL,
+	TRACK_SUBLIME_DONT_PUSH,
+	TRACK_SOULJA_BOY_TELLEM_FT_SAMMIE_KISS_ME_THRU_THE_PHONE_OFFICIAL_VIDEO,
+	TRACK_RESISTOR_CORDLESS_PHONE,
+	TRACK_MIKE_JONES_BACK_THEN,
+	TRACK_JUST_BE_A_MAN_ABOUT_IT_RADIO_EDIT,
+	TRACK_JUNIOR_VASQUEZ_IF_MADONNA_CALLS,
+	TRACK_DRAKE_HOTLINE_BLING_LYRICS,
+	TRACK_CALL_ME_MR_TELEPHONE_CHEYNE_1985_1_USA_DANCE_CHARTS,
+	TRACK_THIZZLE_DANCE,
+	TRACK_BECK_CELLPHONES_DEAD,
+	TRACK_R0T0RR00T3R_BLOW_THE_WHISTLE_BAD_CUT,
+	TRACK_STEELY_DAN_RIKKI_DONT_LOSE_THAT_NUMBER,
+	TRACK_THE_ORLONS_DONT_HANG_UP,
+	TRACK_WOO_WOO,
+	TRACK_TOMMY_TUTONE_867_5309JENNY,
+	TRACK_TONY_BOOTH_LONESOME_7_7203,
+	TRACK_TODD_RUNDGREN_HELLO_ITS_ME_1972,
+  TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT,
+  TRACK_CISCO_DEFAULT_HOLD_MUSIC_HQ_MONO_AUDIO_OPUS_NUMBER_1,
+  TRACK_THE_DEVIL_WENT_DOWN_TO_GEORGIA,
+  TRACK_WEIRD_AL_YANKOVIC_WHITE_NERDY_OFFICIAL_4K_VIDEO,
+  TRACK_TIME_5551212,
+  TRACK_10_10_220_CHRISTOPHER_LLOYD_TAXI_COMMERCIAL_1999
+
+};
+
 
 char string_buffer[30];
 
@@ -255,8 +342,10 @@ String checkSpecialNumber(String number) {
     String trackNumber = "0";
     if (number == "8675309") {
         trackNumber = getProgmem(TRACK_TONY_BOOTH_LONESOME_7_7203);
-    } else if (number == "911" || number == "666") {
+    } else if (number == "911") {
         trackNumber = getProgmem(TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG);
+    } else if (number == "666") {
+        trackNumber = getProgmem(TRACK_THE_DEVIL_WENT_DOWN_TO_GEORGIA);
     } else if (number == "18006492568" || number == "19006492568") {
         trackNumber = getProgmem(TRACK_BABY_GOT_BACK);
     } else if (number == "6060842") {
@@ -269,22 +358,36 @@ String checkSpecialNumber(String number) {
         trackNumber = getProgmem(TRACK_ITS_THE_MUSIC);
     } else if (number == "629") { // MAY
         trackNumber = getProgmem(TRACK_GO_DOWN_TOGETHER);
-    } else if (number == "687") { // MVR
+    } else if (number == "687" || number == "3265" || number == "3666") { // MVR DANK DOOM
         trackNumber = getProgmem(TRACK_RAPP_SNITCH_KNISHES);
     } else if (number == "6424637") { // MHAIMES
         trackNumber = getProgmem(TRACK_HARD_TO_EXPLAIN);
     } else if (number == "2455624") { // BILLMAG
         trackNumber = getProgmem(TRACK_THIZZLE_DANCE);
-    } else if (number == "32510") { // DC510
+    } else if (number == "32510" || number == "510") { // DC510
         trackNumber = getProgmem(TRACK_WOO_WOO);
+    } else if (number == "32207" || number == "207") { // DC207
+        trackNumber = getProgmem(TRACK_BALLAD_OF_THE_20TH_MAINE);
+    } else if (number == "5551212") { // 5551212
+        trackNumber = getProgmem(TRACK_TIME_5551212);
+    } else if (number == "737542268") { // REPLICANT
+        trackNumber = getProgmem(TRACK_DRAKE_HOTLINE_BLING_LYRICS);
+    } else if (number == "5338" || number == "6373" || number == "1337" || number == "31337") { // LEET NERD
+        trackNumber = getProgmem(TRACK_WEIRD_AL_YANKOVIC_WHITE_NERDY_OFFICIAL_4K_VIDEO);
+    } else if (number == "633874" || number == "349433" || number == "834543") { // MEDUS4 OR DIXIE3 OR VEILID
+        trackNumber = getProgmem(TRACK_CISCO_DEFAULT_HOLD_MUSIC_HQ_MONO_AUDIO_OPUS_NUMBER_1);
+    } else if (number == "333266" || number == "33326631") { // DEFCON or DEFCON31
+        trackNumber = getProgmem(TRACK_HACKER_MUSIC);
+    } else if (number == "333266" || number == "1010220") { // 1010220
+        trackNumber = getProgmem(TRACK_10_10_220_CHRISTOPHER_LLOYD_TAXI_COMMERCIAL_1999);
     } else if (number == "7779311") {
         trackNumber = getProgmem(TRACK_THE_TIME_777_9311_SINGLE_VERSION);
     } else if (number == "6345789") {
         trackNumber = getProgmem(TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER);
     } else if (number == "2813308004") {
         trackNumber = getProgmem(TRACK_MIKE_JONES_BACK_THEN);
-    } else if (number == "411") {
-        trackNumber = getProgmem(TRACK_CARELESS_WHISPER);
+    } else if (number == "411" || number == "311") {
+        trackNumber = getProgmem(TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT);
     } else if (number == "4390116") {
         trackNumber = getProgmem(TRACK_SUBLIME_DONT_PUSH);
     } else if (number == "420") {
@@ -336,58 +439,60 @@ void playAdventure() {
 void loop() {
     int rotaryReading = digitalRead(rotaryInput);
     int resetReading = digitalRead(resetInput);
-    if (tmpCounter == 1) {
+    //if (tmpCounter == 1) {
         //uncomment to monitor
         //Serial.println(String(resetReading) + " " + String(resetLastState) + " " + String(resetLastTrueState));
-    }
-    tmpCounter++;
-    tmpCounter = tmpCounter % 10000;
+    //}
+    //tmpCounter++;
+    //tmpCounter = tmpCounter % 10000;
     if ((millis() - rotaryChangeTime) > stoppedDialingMs) {
         if (totalNumberDialed) {
             Serial.println("Dialing: " + totalNumber);
             MP3player.stopTrack();
-            String specialNumber = checkSpecialNumber(totalNumber);
-            if (specialNumber != "0") {
-                Serial.println("Special number");
-                setTotalNumberWithMemory(specialNumber);
-            } else if (currentGame == 0) {
-                // game not yet started
-                // choose from initial menu
-                int newRandom = getRandom();
-                // check to see if random track should be played
-                int i;
-                if (totalNumber == "1980") {
-                    Serial.println("1980 - start game");
-                    currentGame = 1;
-                    totalNumber = "2";
-                } else if (totalNumber == "1995" || totalNumber == "4775619" || totalNumber == "2134775619" || totalNumber == "200" || totalNumber == "266") {
-                    Serial.println("1995 - start game at top");
-                    currentGame = 1;
-                    totalNumber = "1";
-                } else if (totalNumber.length() < 3 && stringToNumber(totalNumber) < RANDOM_TRACK_LENGTH + 1) {
-                    int trackNumber = stringToNumber(totalNumber) - 1;
-                    if (trackNumber < 0) {
-                        trackNumber = 0;
-                    }
-                    Serial.println("Dialed number less than number of random tracks");
-                    loadTrackIntoBuffer(trackNumber);
-                    setTotalNumberWithMemoryFromBuffer();
-                } else if (newRandom < RANDOM_TRACK_LENGTH) {
-                    Serial.println("Playing random track " + newRandom);
-                    loadTrackIntoBuffer(newRandom);
-                    if (wasLastPlayed(string_buffer)) {
-                        Serial.println("Was already played, starting adventure");
+            if (currentGame == 0) {
+                String specialNumber = checkSpecialNumber(totalNumber);
+                if (specialNumber != "0") {
+                    Serial.println("Special number");
+                    setTotalNumberWithMemory(specialNumber);
+                } else {
+                    // game not yet started
+                    // choose from initial menu
+                    int newRandom = getRandom();
+                    // check to see if random track should be played
+                    int i;
+                    if (totalNumber == "1980") {
+                        Serial.println("1980 - start game");
+                        currentGame = 1;
+                        totalNumber = "2";
+                    } else if (totalNumber == "1995" || totalNumber == "4775619" || totalNumber == "2134775619" || totalNumber == "200" || totalNumber == "266") {
+                        Serial.println("1995 - start game at top");
+                        currentGame = 1;
+                        totalNumber = "1";
+                    } else if (totalNumber.length() < 3 && stringToNumber(totalNumber) < RANDOM_TRACK_LENGTH + 1) {
+                        int trackNumber = stringToNumber(totalNumber) - 1;
+                        if (trackNumber < 0) {
+                            trackNumber = 0;
+                        }
+                        Serial.println("Dialed number less than number of random tracks");
+                        loadTrackIntoBuffer(trackNumber);
+                        setTotalNumberWithMemoryFromBuffer();
+                    } else if (newRandom < RANDOM_TRACK_LENGTH) {
+                        Serial.println("Playing random track " + newRandom);
+                        loadTrackIntoBuffer(newRandom);
+                        if (wasLastPlayed(string_buffer)) {
+                            Serial.println("Was already played, starting adventure");
+                            //playAdventure();
+                            currentGame = 1;
+                            totalNumber = "1";
+                        } else {
+                            setTotalNumberWithMemoryFromBuffer();
+                        }
+                    } else {
+                        Serial.println("Fall through, start adventure");
                         //playAdventure();
                         currentGame = 1;
                         totalNumber = "1";
-                    } else {
-                        setTotalNumberWithMemoryFromBuffer();
                     }
-                } else {
-                    Serial.println("Fall through, start adventure");
-                    //playAdventure();
-                    currentGame = 1;
-                    totalNumber = "1";
                 }
             } else if (currentGame == 1) {
                 if (totalNumber == "0") {
@@ -442,7 +547,7 @@ void loop() {
                 totalNumber = "";
                 MP3player.playTrack(stringToNumber(getProgmem(TRACK_DEFCON_INTRO)));
             } else {
-              
+
             }
         }
     }
@@ -484,6 +589,6 @@ void loop() {
             }
         }
     }
-    
+
     resetLastState = resetReading;
 }
