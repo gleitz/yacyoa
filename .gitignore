@@ -7,3 +7,13 @@ old/
 *.egg-info
 *~
 .#*
+
+*/songs/*.mp3
+*/songs/converted/
+*/songs/original/
+*/songs/raw/
+*/songs/songs.txt
+sounds*/
+rotary-phone-ring-medium-103869.mp3
+
+.dir-locals.el

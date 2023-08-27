@@ -1,10 +1,11 @@
 /*
- * DEFCON Online
- * A Telephone System for DEFCON 30
+ * Playa Online
+ * A Telephone System for Burning Man
  *
  * Benjamin Gleitzman (gleitz@mit.edu)
  *
  * Board is Arduino Duemilanove
+ * Code is for Black Telephone
  */
 
 // TODO(gleitz): leet, defcon, replicant
@@ -66,7 +67,7 @@ int currentGame = 0; // The current game being played
 // Adventure tracks 1-121
 const char TRACK_ADVENTURE[] PROGMEM = "1";
 
-const char TRACK_DEFCON_INTRO[] PROGMEM = "122";
+const char TRACK_INTRO[] PROGMEM = "122";
 
 //const char TRACK_CARELESS[] PROGMEM = "202";
 //const char TRACK_ELVISH[] PROGMEM = "203";
@@ -185,7 +186,7 @@ const char TRACK_SKYY_CALL_ME_SINGLE_VERSION[] PROGMEM = "203";
 // END OF GENERATED SECTION
 
 const char* const RANDOM_TRACKS[] PROGMEM = {
-  TRACK_DEFCON_INTRO, // 1
+  TRACK_INTRO, // 1
 	TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE,
 	TRACK_RAFFI_BANANAPHONE,
 	TRACK_CARELESS_WHISPER,
@@ -296,8 +297,6 @@ void setup() {
 
     Serial.println("done");
     MP3player.setVolume(2, 2);
-    // TODO: do i need this?
-    MP3player.playTrack(stringToNumber(getProgmem(TRACK_DEFCON_INTRO)));
     randomSeed(analogRead(0)); // make sure the sequence is random
 }
 
@@ -521,7 +520,7 @@ void loop() {
                         Serial.println("1980 - start game");
                         currentGame = 1;
                         totalNumber = "2";
-                    } else if (totalNumber == "1995" || totalNumber == "4775619" || totalNumber == "2134775619" || totalNumber == "200" || totalNumber == "266") {
+                    } else if (totalNumber == "1995" || totalNumber == "4775619" || totalNumber == "2134775619" || totalNumber == "200" || totalNumber == "266" || totalNumber =="2876" || totalNumber == "75292") { // BOO B00 BURN PLAYA NUMBER_ON_BLACK_PHONE
                         Serial.println("1995 - start game at top");
                         currentGame = 1;
                         totalNumber = "1";
@@ -591,18 +590,17 @@ void loop() {
     rotaryLastState = rotaryReading;
 
     // reset if the phone has been on the hook for a while
-    if (resetLastTrueState == HIGH && (millis() - resetChangeTime) > stoppedDialingMs) {
+    if (resetLastTrueState == HIGH && (millis() - resetChangeTime) > resetAfterMs) {
         if (resetReading != resetLastTrueState) {
             Serial.println("Eating it!");
             resetLastTrueState = resetReading;
             if (resetLastTrueState == LOW) {
                 Serial.println("We should start!");
                 Serial.println("Reset!");
-                activated = true;
                 MP3player.stopTrack();
                 currentGame = 0;
                 totalNumber = "";
-                MP3player.playTrack(stringToNumber(getProgmem(TRACK_DEFCON_INTRO)));
+                MP3player.playTrack(stringToNumber(getProgmem(TRACK_INTRO)));
             } else {
 
             }
@@ -611,24 +609,40 @@ void loop() {
 
     if ((millis() - resetChangeTime) > resetAfterMs) {
         if (singleNumberResetDialed) {
-            Serial.println("Dialed reset: " + resetCount % 10);
-            totalNumber = totalNumber + String(resetCount % 10);
-            Serial.println("Total number reset is: " + totalNumber);
-            singleNumberResetDialed = false;
-            totalNumberResetDialed = true;
-            //totalNumberDialed = true;
-            resetCount = 0;
+            if (resetLastTrueState == HIGH) { // phone is on the hook (only necessary for black telephone)
+                Serial.println("Phone on hook, stopping");
+                singleNumberResetDialed = false;
+                count = 0;
+                resetCount = 0;
+                MP3player.stopTrack();
+            } else {
+                Serial.println("Dialed reset: " + resetCount % 10);
+                totalNumber = totalNumber + String(resetCount % 10);
+                Serial.println("Total number reset is: " + totalNumber);
+                singleNumberResetDialed = false;
+                totalNumberResetDialed = true;
+                //totalNumberDialed = true;
+                resetCount = 0;
+            }
         }
     }
 
     if ((millis() - resetChangeTime) > stoppedDialingMs) {
         if (totalNumberResetDialed) {
-          Serial.println("Total number reset2 is: " + totalNumber);
-          singleNumberResetDialed = false;
-          totalNumberDialed = true;
-          totalNumberResetDialed = false;
-          count = 0;
-          resetCount = 0;
+            if (resetLastTrueState == HIGH) { // phone is on the hook (only necessary for black telephone)
+                Serial.println("Phone on hook, stopping");
+                totalNumberResetDialed = false;
+                count = 0;
+                resetCount = 0;
+                MP3player.stopTrack();
+            } else {
+                Serial.println("Total number reset2 is: " + totalNumber);
+                singleNumberResetDialed = false;
+                totalNumberDialed = true;
+                totalNumberResetDialed = false;
+                count = 0;
+                resetCount = 0;
+              }
         }
     }
 
@@ -648,4 +662,10 @@ void loop() {
     }
 
     resetLastState = resetReading;
+
+    // seems necessary for Black phone
+    if (!activated && resetLastState == LOW) {
+        MP3player.playTrack(stringToNumber(getProgmem(TRACK_INTRO)));
+        activated = true;
+    }
 }
