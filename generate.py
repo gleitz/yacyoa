@@ -11,11 +11,15 @@ import os
 import subprocess
 import re
 
-from google_tts import synthesize
+# from google_tts import synthesize
+from elevenlabs_tts import synthesize as synthesize_eleven
 
 PAGE_RE = re.compile('Page (\d+)')
 
 VOICE = 'en-GB-News-H'
+ELEVEN_VOICE = 'Arthur'
+# SOUNDS_DIR = os.path.join(os.path.dirname(__file__), f'sounds_{VOICE} (gleitz)')
+SOUNDS_DIR = os.path.join(os.path.dirname(__file__), f'sounds_{ELEVEN_VOICE} (gleitz)')
 
 # For voices using Mac OSX's say command
 SAY_CMD = "say -v Serena -o /tmp/sub-{number}.aiff -f /tmp/{number}.txt -r 160 && lame /tmp/sub-{number}.aiff --tg Speech -b 160 -m m {output_path}"
@@ -33,8 +37,6 @@ SAY_CMD = "say -v Serena -o /tmp/sub-{number}.aiff -f /tmp/{number}.txt -r 160 &
 TEMPO_CMD = 'sox /tmp/output.wav /tmp/output2.wav tempo 1.1'
 LAME_CMD = 'lame /tmp/output2.wav --tg Speech --preset mw-us {0}'
 AFPLAY_CMD = 'afplay {0}'
-
-SOUNDS_DIR = os.path.join(os.path.dirname(__file__), f'sounds_{VOICE}')
 
 
 def parse_pages():
@@ -56,7 +58,8 @@ def parse_pages():
 def speak_pages(pages):
     for page_num, page in pages.items():
         # uncomment to just create intro
-        if page_num != 2:
+        # if page_num != 2:
+        if page_num not in [76, 107]:
             continue
         if not page.strip():
             continue
@@ -70,7 +73,8 @@ def speak_pages(pages):
         # print(command)
         # subprocess.Popen(['/bin/bash', '-c', command])
 
-        audio_content = synthesize(page, VOICE, speakingRate=1.1, returnAudio=True, volume_gain_db=16.0)
+        # audio_content = synthesize(page, VOICE, speakingRate=1.1, returnAudio=True, volume_gain_db=16.0)
+        audio_content = synthesize_eleven(page, ELEVEN_VOICE)
         with open(output_data['output_path'], 'wb') as f:
             f.write(audio_content)
 

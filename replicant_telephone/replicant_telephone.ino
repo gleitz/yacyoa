@@ -1,8 +1,11 @@
 /*
- * DEFCON Online
- * A Telephone System for Replicant Resolve 2022
+ * Replicant Online
+ * A Telephone System for Replicant (Resolve '23)
  *
- * Benjamin Gleitzman (gleitz@replicant.com)
+ * Benjamin Gleitzman (gleitz@replicant.ai)
+ *
+ * Board is Arduino Duemilanove
+ * Code is for Black Telephone (but perhaps works on both?)
  */
 
 // TODO(gleitz): leet, defcon, replicant
@@ -25,27 +28,36 @@ vs1053 MP3player;
 
 byte result;
 
+// int tmpCounter = 0; // Used for knowing when to print periodic values
+
 int count; // The number being dialed
+int resetCount; // The reset number being dialed
 String lastTrackPlayed = ""; // The number of the track last played
 String totalNumber = ""; // The running total of numbers dialed
 
 boolean singleNumberDialed = false; // Single number is finished dialing
+boolean singleNumberResetDialed = false; // Single number is finished dialing
+boolean totalNumberResetDialed = false; // Total number finished dialing
 boolean totalNumberDialed = false; // Total number finished dialing
 
-int rotaryInput = 12; // Input for the rotary device (used to be 12 in previous version)
+boolean activated = false; // if the phone is working
+
+int rotaryInput = 12; // Input for the rotary device
 int resetInput = 5; // Input for the phone reset
 
 int rotaryLastState = LOW; // The previous state of the rotary
 int rotaryLastTrueState = LOW; // The previous state of the rotary (stabilized)
 int resetLastState = HIGH; // The previous state of the reset
-int resetLastStateTrue = HIGH; // The previous state of the reset (stabilized)
+int resetLastTrueState = HIGH; // The previous state of the reset (stabilized)
 
 long rotaryChangeTime = 0; // Time since last rotary change
 long resetChangeTime = 0; // Time since last reset change
 
 int dialHasFinishedRotatingAfterMs = 100; // ms to take dial to stop turning
+int resetAfterMs = 700; // ms to wait before we count a reset
 int stoppedDialingMs = 2000; // ms to take before reading entire number
 int debounceDelay = 10; // ms for dial reading to stabilize
+int resetDebounceDelay = 10; // ms for dial reading to stabilize
 
 int currentGame = 0; // The current game being played
 
@@ -55,59 +67,123 @@ int currentGame = 0; // The current game being played
 // Adventure tracks 1-121
 const char TRACK_ADVENTURE[] PROGMEM = "1";
 
-const char TRACK_DEFCON_INTRO[] PROGMEM = "122";
+const char TRACK_INTRO[] PROGMEM = "122";
 
-const char TRACK_5_7_0_5[] PROGMEM = "123";
-const char TRACK_6060842[] PROGMEM = "124";
-const char TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER[] PROGMEM = "125";
-const char TRACK_853_5937[] PROGMEM = "126";
-const char TRACK_BACKSTREET_BOYS_THE_CALL_OFFICIAL_HD_VIDEO[] PROGMEM = "127";
-const char TRACK_BECK_CELLPHONES_DEAD[] PROGMEM = "128";
-const char TRACK_BLADE_RUNNER_O_MAIN_THEME_O_VANGELIS[] PROGMEM = "129";
-const char TRACK_BLONDIE_HANGING_ON_THE_TELEPHONE[] PROGMEM = "130";
-const char TRACK_BLONDIE_CALL_ME[] PROGMEM = "131";
-const char TRACK_CAKE_NEVER_THERE[] PROGMEM = "132";
-const char TRACK_CALL_ME_BACK_AGAIN[] PROGMEM = "133";
-const char TRACK_CALL_ME[] PROGMEM = "134";
-const char TRACK_CALL_ME_MR_TELEPHONE_CHEYNE_1985_1_USA_DANCE_CHARTS[] PROGMEM = "135";
-const char TRACK_CARELESS_WHISPER[] PROGMEM = "136";
-const char TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE[] PROGMEM = "137";
-const char TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO[] PROGMEM = "138";
-const char TRACK_DRAKE_HOTLINE_BLING_LYRICS[] PROGMEM = "139";
-const char TRACK_ERIC_PRYDZ_CALL_ON_ME[] PROGMEM = "140";
-const char TRACK_GLENN_MILLER_PENNSYLVANIA_6_5000_1940_DIGITALLY_REMASTERED[] PROGMEM = "141";
-const char TRACK_HAD_TO_PHONE_YA_REMASTERED_2000[] PROGMEM = "142";
-const char TRACK_HOW_COME_U_DONT_CALL_ME_ANYMORE[] PROGMEM = "143";
-const char TRACK_I_JUST_CALLED_TO_SAY_I_LOVE_YOU[] PROGMEM = "144";
-const char TRACK_JUNIOR_VASQUEZ_IF_MADONNA_CALLS[] PROGMEM = "145";
-const char TRACK_JUST_BE_A_MAN_ABOUT_IT_RADIO_EDIT[] PROGMEM = "146";
-const char TRACK_KRAFTWERK_THE_TELEPHONE_CALL[] PROGMEM = "147";
-const char TRACK_LOVE_ON_THE_TELEPHONE[] PROGMEM = "148";
-const char TRACK_MARY_WELLS_OPERATOR[] PROGMEM = "149";
-const char TRACK_MABEL_DONT_CALL_ME_UP_OFFICIAL_VIDEO[] PROGMEM = "150";
-const char TRACK_NEW_EDITION_MR_TELEPHONE_MAN_OFFICIAL_MUSIC_VIDEO[] PROGMEM = "151";
-const char TRACK_OPERATOR_JIM_CROCE[] PROGMEM = "152";
-const char TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG[] PROGMEM = "153";
-const char TRACK_PRIMITIVE_RADIO_GODS_STANDING_OUTSIDE_A_BROKEN_PHONE_BOOTH_WITH_MONEY_IN_MY_HAND_1996[] PROGMEM = "154";
-const char TRACK_RAFFI_BANANAPHONE[] PROGMEM = "155";
-const char TRACK_RING_RING_ENGLISH_VERSION[] PROGMEM = "156";
-const char TRACK_SMOOTH_OPERATOR_REMASTERED[] PROGMEM = "157";
-const char TRACK_SPIDERWEBS[] PROGMEM = "158";
-const char TRACK_STEELY_DAN_RIKKI_DONT_LOSE_THAT_NUMBER[] PROGMEM = "159";
-const char TRACK_THE_ORLONS_DONT_HANG_UP[] PROGMEM = "160";
-const char TRACK_TELEPHONE[] PROGMEM = "161";
-const char TRACK_THE_BIG_BOPPER_CHANTILLY_LACE_HQ[] PROGMEM = "162";
-const char TRACK_THE_CALL_BACKSTREET_BOYS_FEAT_THE_NEPTUNES_REMIX[] PROGMEM = "163";
-const char TRACK_THE_KINKS_PARTY_LINE_HQ[] PROGMEM = "164";
-const char TRACK_THE_MARVELETTES_BEECHWOOD_4_5789[] PROGMEM = "165";
-const char TRACK_THE_TIME_777_9311_SINGLE_VERSION[] PROGMEM = "166";
-const char TRACK_THEME_SONG_KIM_POSSIBLE_DISNEY_CHANNEL[] PROGMEM = "167";
-const char TRACK_TODD_RUNDGREN_HELLO_ITS_ME_1972[] PROGMEM = "168";
-const char TRACK_TOMMY_TUTONE_867_5309JENNY[] PROGMEM = "169";
-const char TRACK_TONY_BOOTH_LONESOME_7_7203[] PROGMEM = "170";
-const char TRACK_GAFFYOURSELF[] PROGMEM = "171";
-const char TRACK_SKYY_CALL_ME_SINGLE_VERSION[] PROGMEM = "172";
-const char* const RANDOM_TRACKS[] PROGMEM = { TRACK_5_7_0_5, TRACK_6060842, TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER, TRACK_853_5937, TRACK_BACKSTREET_BOYS_THE_CALL_OFFICIAL_HD_VIDEO, TRACK_BECK_CELLPHONES_DEAD, TRACK_BLADE_RUNNER_O_MAIN_THEME_O_VANGELIS, TRACK_BLONDIE_HANGING_ON_THE_TELEPHONE, TRACK_BLONDIE_CALL_ME, TRACK_CAKE_NEVER_THERE, TRACK_CALL_ME_BACK_AGAIN, TRACK_CALL_ME, TRACK_CALL_ME_MR_TELEPHONE_CHEYNE_1985_1_USA_DANCE_CHARTS, TRACK_CARELESS_WHISPER, TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE, TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO, TRACK_DRAKE_HOTLINE_BLING_LYRICS, TRACK_ERIC_PRYDZ_CALL_ON_ME, TRACK_GLENN_MILLER_PENNSYLVANIA_6_5000_1940_DIGITALLY_REMASTERED, TRACK_HAD_TO_PHONE_YA_REMASTERED_2000, TRACK_HOW_COME_U_DONT_CALL_ME_ANYMORE, TRACK_I_JUST_CALLED_TO_SAY_I_LOVE_YOU, TRACK_JUNIOR_VASQUEZ_IF_MADONNA_CALLS, TRACK_JUST_BE_A_MAN_ABOUT_IT_RADIO_EDIT, TRACK_KRAFTWERK_THE_TELEPHONE_CALL, TRACK_LOVE_ON_THE_TELEPHONE, TRACK_MARY_WELLS_OPERATOR, TRACK_MABEL_DONT_CALL_ME_UP_OFFICIAL_VIDEO, TRACK_NEW_EDITION_MR_TELEPHONE_MAN_OFFICIAL_MUSIC_VIDEO, TRACK_OPERATOR_JIM_CROCE, TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG, TRACK_PRIMITIVE_RADIO_GODS_STANDING_OUTSIDE_A_BROKEN_PHONE_BOOTH_WITH_MONEY_IN_MY_HAND_1996, TRACK_RAFFI_BANANAPHONE, TRACK_RING_RING_ENGLISH_VERSION, TRACK_SMOOTH_OPERATOR_REMASTERED, TRACK_SPIDERWEBS, TRACK_STEELY_DAN_RIKKI_DONT_LOSE_THAT_NUMBER, TRACK_THE_ORLONS_DONT_HANG_UP, TRACK_TELEPHONE, TRACK_THE_BIG_BOPPER_CHANTILLY_LACE_HQ, TRACK_THE_CALL_BACKSTREET_BOYS_FEAT_THE_NEPTUNES_REMIX, TRACK_THE_KINKS_PARTY_LINE_HQ, TRACK_THE_MARVELETTES_BEECHWOOD_4_5789, TRACK_THE_TIME_777_9311_SINGLE_VERSION, TRACK_THEME_SONG_KIM_POSSIBLE_DISNEY_CHANNEL, TRACK_TODD_RUNDGREN_HELLO_ITS_ME_1972, TRACK_TOMMY_TUTONE_867_5309JENNY, TRACK_TONY_BOOTH_LONESOME_7_7203, TRACK_GAFFYOURSELF, TRACK_SKYY_CALL_ME_SINGLE_VERSION };
+//const char TRACK_CARELESS[] PROGMEM = "202";
+//const char TRACK_ELVISH[] PROGMEM = "203";
+//const char TRACK_WHACKEY[] PROGMEM = "204";
+//const char TRACK_JENNY[] PROGMEM = "205";
+//const char TRACK_GHOST[] PROGMEM = "206";
+//const char TRACK_BABY_BACK[] PROGMEM = "207";
+//const char TRACK_B52[] PROGMEM = "208";
+//const char TRACK_777[] PROGMEM = "209";
+//const char TRACK_PICKETT[] PROGMEM = "210";
+//const char TRACK_MIKE_JONES[] PROGMEM = "211";
+//const char TRACK_LUDACRIS[] PROGMEM = "212";
+//const char TRACK_BEECHWOOD[] PROGMEM = "213";
+//const char TRACK_BIGELOW[] PROGMEM = "214";
+//const char TRACK_411[] PROGMEM = "215";
+//const char TRACK_SUBLIME[] PROGMEM = "216";
+//const char TRACK_TOOTS[] PROGMEM = "217";
+//const char TRACK_OPERATOR[] PROGMEM = "218";
+//const char TRACK_PENN[] PROGMEM = "219";
+//const char TRACK_808[] PROGMEM = "220";
+//const char TRACK_DEELITE[] PROGMEM = "221";
+//const char TRACK_WHAT_IS_LOVE[] PROGMEM = "222";
+//const char TRACK_STAR_69[] PROGMEM = "223";
+//const char TRACK_GOAL[] PROGMEM = "224";
+//const char TRACK_VADER[] PROGMEM = "225";
+//const char TRACK_CHUCK_BERRY[] PROGMEM = "226";
+//const char TRACK_PYTHON[] PROGMEM = "227";
+//const char TRACK_433[] PROGMEM = "228";
+//const char TRACK_BOYZ[] PROGMEM = "229";
+//const char TRACK_DUTCHIE[] PROGMEM = "230";
+//
+//const char* const RANDOM_TRACKS[] PROGMEM = {TRACK_ADVENTURE, TRACK_CARELESS, TRACK_ELVISH, TRACK_WHACKEY, TRACK_JENNY, TRACK_GHOST, TRACK_B52, TRACK_777, TRACK_PICKETT, TRACK_MIKE_JONES, TRACK_LUDACRIS, TRACK_BEECHWOOD, TRACK_BIGELOW, TRACK_411, TRACK_SUBLIME, TRACK_TOOTS, TRACK_OPERATOR, TRACK_PENN, TRACK_808, TRACK_WHAT_IS_LOVE, TRACK_GOAL, TRACK_CHUCK_BERRY, TRACK_PYTHON};
+
+// START OF GENERATED SECTION
+const char TRACK_10_10_220_CHRISTOPHER_LLOYD_TAXI_COMMERCIAL_1999[] PROGMEM = "123";
+const char TRACK_5_7_0_5[] PROGMEM = "124";
+const char TRACK_6060842[] PROGMEM = "125";
+const char TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER[] PROGMEM = "126";
+const char TRACK_853_5937[] PROGMEM = "127";
+const char TRACK_BACKSTREET_BOYS_THE_CALL_OFFICIAL_HD_VIDEO[] PROGMEM = "128";
+const char TRACK_BECK_CELLPHONES_DEAD[] PROGMEM = "129";
+const char TRACK_BLADE_RUNNER_O_MAIN_THEME_O_VANGELIS[] PROGMEM = "130";
+const char TRACK_BLONDIE_HANGING_ON_THE_TELEPHONE[] PROGMEM = "131";
+const char TRACK_BLONDIE_CALL_ME[] PROGMEM = "132";
+const char TRACK_CAKE_NEVER_THERE[] PROGMEM = "133";
+const char TRACK_CALL_ME_BACK_AGAIN[] PROGMEM = "134";
+const char TRACK_CALL_ME[] PROGMEM = "135";
+const char TRACK_CALL_ME_MR_TELEPHONE_CHEYNE_1985_1_USA_DANCE_CHARTS[] PROGMEM = "136";
+const char TRACK_CARELESS_WHISPER[] PROGMEM = "137";
+const char TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE[] PROGMEM = "138";
+const char TRACK_CISCO_DEFAULT_HOLD_MUSIC_HQ_MONO_AUDIO_OPUS_NUMBER_1[] PROGMEM = "139";
+const char TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO[] PROGMEM = "140";
+const char TRACK_DRAKE_HOTLINE_BLING_LYRICS[] PROGMEM = "141";
+const char TRACK_ERIC_PRYDZ_CALL_ON_ME[] PROGMEM = "142";
+const char TRACK_GLENN_MILLER_PENNSYLVANIA_6_5000_1940_DIGITALLY_REMASTERED[] PROGMEM = "143";
+const char TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT[] PROGMEM = "144";
+const char TRACK_HAD_TO_PHONE_YA_REMASTERED_2000[] PROGMEM = "145";
+const char TRACK_HARD_TO_EXPLAIN[] PROGMEM = "146";
+const char TRACK_HOW_COME_U_DONT_CALL_ME_ANYMORE[] PROGMEM = "147";
+const char TRACK_I_JUST_CALLED_TO_SAY_I_LOVE_YOU[] PROGMEM = "148";
+const char TRACK_JUNIOR_VASQUEZ_IF_MADONNA_CALLS[] PROGMEM = "149";
+const char TRACK_JUST_BE_A_MAN_ABOUT_IT_RADIO_EDIT[] PROGMEM = "150";
+const char TRACK_KEHA_STEPHEN[] PROGMEM = "151";
+const char TRACK_KRAFTWERK_THE_TELEPHONE_CALL[] PROGMEM = "152";
+const char TRACK_LITTLE_MIX_HOW_YA_DOIN_FT_MISSY_ELLIOTT[] PROGMEM = "153";
+const char TRACK_LONG_DISTANCE_RUNAROUND_2008_REMASTER[] PROGMEM = "154";
+const char TRACK_MARY_WELLS_OPERATOR[] PROGMEM = "155";
+const char TRACK_MABEL_DONT_CALL_ME_UP_OFFICIAL_VIDEO[] PROGMEM = "156";
+const char TRACK_NEW_EDITION_MR_TELEPHONE_MAN_OFFICIAL_MUSIC_VIDEO[] PROGMEM = "157";
+const char TRACK_OPERATOR_JIM_CROCE[] PROGMEM = "158";
+const char TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG[] PROGMEM = "159";
+const char TRACK_PICK_UP_THE_PHONE[] PROGMEM = "160";
+const char TRACK_POPPY_MOSHI_MOSHI_OFFICIAL_VIDEO[] PROGMEM = "161";
+const char TRACK_PRIMITIVE_RADIO_GODS_STANDING_OUTSIDE_A_BROKEN_PHONE_BOOTH_WITH_MONEY_IN_MY_HAND_1996[] PROGMEM = "162";
+const char TRACK_R_E_M_STAR_69_MONSTER_REMASTERED[] PROGMEM = "163";
+const char TRACK_RAFFI_BANANAPHONE[] PROGMEM = "164";
+const char TRACK_RESISTOR_CORDLESS_PHONE[] PROGMEM = "165";
+const char TRACK_RING_RING_ENGLISH_VERSION[] PROGMEM = "166";
+const char TRACK_SMOOTH_OPERATOR_REMASTERED[] PROGMEM = "167";
+const char TRACK_SOULJA_BOY_TELLEM_FT_SAMMIE_KISS_ME_THRU_THE_PHONE_OFFICIAL_VIDEO[] PROGMEM = "168";
+const char TRACK_SPIDERWEBS[] PROGMEM = "169";
+const char TRACK_STEELY_DAN_RIKKI_DONT_LOSE_THAT_NUMBER[] PROGMEM = "170";
+const char TRACK_THE_ORLONS_DONT_HANG_UP[] PROGMEM = "171";
+const char TRACK_TELEPHONE[] PROGMEM = "172";
+const char TRACK_THE_BIG_BOPPER_CHANTILLY_LACE_HQ[] PROGMEM = "173";
+const char TRACK_THE_CALL_BACKSTREET_BOYS_FEAT_THE_NEPTUNES_REMIX[] PROGMEM = "174";
+const char TRACK_THE_DEVIL_WENT_DOWN_TO_GEORGIA[] PROGMEM = "175";
+const char TRACK_THE_KINKS_PARTY_LINE_HQ[] PROGMEM = "176";
+const char TRACK_THE_MARVELETTES_BEECHWOOD_4_5789[] PROGMEM = "177";
+const char TRACK_THE_TIME_777_9311_SINGLE_VERSION[] PROGMEM = "178";
+const char TRACK_THEME_SONG_KIM_POSSIBLE_DISNEY_CHANNEL[] PROGMEM = "179";
+const char TRACK_TIME_5551212[] PROGMEM = "180";
+const char TRACK_TODD_RUNDGREN_HELLO_ITS_ME_1972[] PROGMEM = "181";
+const char TRACK_TOMMY_TUTONE_867_5309JENNY[] PROGMEM = "182";
+const char TRACK_TONY_BOOTH_LONESOME_7_7203[] PROGMEM = "183";
+const char TRACK_WEIRD_AL_YANKOVIC_WHITE_NERDY_OFFICIAL_4K_VIDEO[] PROGMEM = "184";
+const char TRACK_YOUNG_LUST[] PROGMEM = "185";
+const char TRACK_GAFFYOURSELF[] PROGMEM = "186";
+const char TRACK_SKYY_CALL_ME_SINGLE_VERSION[] PROGMEM = "187";
+// END OF GENERATED SECTION
+
+const char* const RANDOM_TRACKS[] PROGMEM = {
+  TRACK_INTRO, // 1
+	TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE,
+	TRACK_RAFFI_BANANAPHONE,
+	TRACK_CARELESS_WHISPER,
+	TRACK_5_7_0_5,
+	TRACK_6060842,
+	TRACK_THE_TIME_777_9311_SINGLE_VERSION,
+	TRACK_853_5937,
+	TRACK_SPIDERWEBS, // 9
+	TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER, // 0
+
+  TRACK_5_7_0_5, TRACK_6060842, TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER, TRACK_853_5937, TRACK_BACKSTREET_BOYS_THE_CALL_OFFICIAL_HD_VIDEO, TRACK_BECK_CELLPHONES_DEAD, TRACK_BLADE_RUNNER_O_MAIN_THEME_O_VANGELIS, TRACK_BLONDIE_HANGING_ON_THE_TELEPHONE, TRACK_BLONDIE_CALL_ME, TRACK_CAKE_NEVER_THERE, TRACK_CALL_ME_BACK_AGAIN, TRACK_CALL_ME, TRACK_CALL_ME_MR_TELEPHONE_CHEYNE_1985_1_USA_DANCE_CHARTS, TRACK_CARELESS_WHISPER, TRACK_CARLY_RAE_JEPSEN_CALL_ME_MAYBE, TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO, TRACK_DRAKE_HOTLINE_BLING_LYRICS, TRACK_ERIC_PRYDZ_CALL_ON_ME, TRACK_GLENN_MILLER_PENNSYLVANIA_6_5000_1940_DIGITALLY_REMASTERED, TRACK_HAD_TO_PHONE_YA_REMASTERED_2000, TRACK_HOW_COME_U_DONT_CALL_ME_ANYMORE, TRACK_I_JUST_CALLED_TO_SAY_I_LOVE_YOU, TRACK_JUNIOR_VASQUEZ_IF_MADONNA_CALLS, TRACK_JUST_BE_A_MAN_ABOUT_IT_RADIO_EDIT, TRACK_KRAFTWERK_THE_TELEPHONE_CALL, TRACK_MARY_WELLS_OPERATOR, TRACK_MABEL_DONT_CALL_ME_UP_OFFICIAL_VIDEO, TRACK_NEW_EDITION_MR_TELEPHONE_MAN_OFFICIAL_MUSIC_VIDEO, TRACK_OPERATOR_JIM_CROCE, TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG, TRACK_PRIMITIVE_RADIO_GODS_STANDING_OUTSIDE_A_BROKEN_PHONE_BOOTH_WITH_MONEY_IN_MY_HAND_1996, TRACK_RAFFI_BANANAPHONE, TRACK_RING_RING_ENGLISH_VERSION, TRACK_SMOOTH_OPERATOR_REMASTERED, TRACK_SPIDERWEBS, TRACK_STEELY_DAN_RIKKI_DONT_LOSE_THAT_NUMBER, TRACK_THE_ORLONS_DONT_HANG_UP, TRACK_TELEPHONE, TRACK_THE_BIG_BOPPER_CHANTILLY_LACE_HQ, TRACK_THE_CALL_BACKSTREET_BOYS_FEAT_THE_NEPTUNES_REMIX, TRACK_THE_KINKS_PARTY_LINE_HQ, TRACK_THE_MARVELETTES_BEECHWOOD_4_5789, TRACK_THE_TIME_777_9311_SINGLE_VERSION, TRACK_THEME_SONG_KIM_POSSIBLE_DISNEY_CHANNEL, TRACK_TODD_RUNDGREN_HELLO_ITS_ME_1972, TRACK_TOMMY_TUTONE_867_5309JENNY, TRACK_TONY_BOOTH_LONESOME_7_7203, TRACK_GAFFYOURSELF, TRACK_SKYY_CALL_ME_SINGLE_VERSION
+};
+
 
 char string_buffer[30];
 
@@ -116,7 +192,6 @@ int RANDOM_TRACK_LENGTH = NUMITEMS(RANDOM_TRACKS);
 
 void setup() {
     pinMode(rotaryInput, INPUT);
-    pinMode(resetInput, INPUT);
     Serial.begin(115200);
 
     Serial.print("Starting...");
@@ -140,9 +215,7 @@ void setup() {
     }
 
     Serial.println("done");
-    MP3player.setVolume(0xA, 0xA); // 0x14, 0x14
-    // TODO: do i need this?
-    MP3player.playTrack(stringToNumber(getProgmem(TRACK_DEFCON_INTRO)));
+    MP3player.setVolume(2, 2);
     randomSeed(analogRead(0)); // make sure the sequence is random
 }
 
@@ -183,32 +256,107 @@ String getProgmem(const char* value) {
     return (const __FlashStringHelper *)value;
 }
 
+/* struct Mapping { */
+/*   const char* numbers[20]; */
+/*   const char* tracks[10]; */
+/* }; */
+
+/* String checkSpecialNumber(String number) { */
+/*   Mapping mappings[] = { */
+/*     {{"8675309", NULL}, {TRACK_TOMMY_TUTONE_867_5309JENNY, NULL}}, */
+/*     {{"911", NULL}, {TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG, NULL}}, */
+/*     {{"666", NULL}, {TRACK_THE_DEVIL_WENT_DOWN_TO_GEORGIA, NULL}}, */
+/*     {{"18006492568", "19006492568", NULL}, {TRACK_BABY_GOT_BACK, NULL}}, */
+/*     {{"6060842", NULL}, {TRACK_6060842, NULL}}, */
+/*     {{"285538", "6224", "62242583", NULL}, {TRACK_HACKER_MUSIC, NULL}}, */
+/*     {{"7258", NULL}, {TRACK_SALT_SHAKER, NULL}}, */
+/*     {{"33582", NULL}, {TRACK_ITS_THE_MUSIC, NULL}}, */
+/*     {{"629", NULL}, {TRACK_GO_DOWN_TOGETHER, NULL}}, */
+/*     {{"687", "3265", "3666", NULL}, {TRACK_RAPP_SNITCH_KNISHES, NULL}}, */
+/*     {{"6424637", NULL}, {TRACK_HARD_TO_EXPLAIN, NULL}}, */
+/*     {{"2455624", NULL}, {TRACK_THIZZLE_DANCE, NULL}}, */
+/*     {{"32510", "510", NULL}, {TRACK_WOO_WOO, NULL}}, */
+/*     {{"32207", "207", NULL}, {TRACK_BALLAD_OF_THE_20TH_MAINE, NULL}}, */
+/*     {{"5551212", NULL}, {TRACK_TIME_5551212, NULL}}, */
+/*     {{"737542268", NULL}, {TRACK_DRAKE_HOTLINE_BLING_LYRICS, NULL}}, */
+/*     {{"5338", "6373", "1337", "31337", NULL}, {TRACK_WEIRD_AL_YANKOVIC_WHITE_NERDY_OFFICIAL_4K_VIDEO, NULL}}, */
+/*     {{"633874", "349433", "834543", NULL}, {TRACK_CISCO_DEFAULT_HOLD_MUSIC_HQ_MONO_AUDIO_OPUS_NUMBER_1, NULL}}, */
+/*     {{"333266", "33326631", NULL}, {TRACK_HACKER_MUSIC, NULL}}, */
+/*     {{"333266", "1010220", NULL}, {TRACK_10_10_220_CHRISTOPHER_LLOYD_TAXI_COMMERCIAL_1999, NULL}}, */
+/*     {{"7779311", NULL}, {TRACK_THE_TIME_777_9311_SINGLE_VERSION, NULL}}, */
+/*     {{"6345789", NULL}, {TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER, NULL}}, */
+/*     {{"2813308004", NULL}, {TRACK_MIKE_JONES_BACK_THEN, NULL}}, */
+/*     {{"411", "311", NULL}, {TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT, NULL}}, */
+/*     {{"4390116", NULL}, {TRACK_SUBLIME_DONT_PUSH, NULL}}, */
+/*     {{"420", "808", "707", "505", "202", NULL}, {TRACK_HITS_FROM_THE_BONG, NULL}}, */
+/*     {{"5108160458", "0", NULL}, {TRACK_SMOOTH_OPERATOR_REMASTERED, NULL}}, */
+/*     {{"69", NULL}, {TRACK_2_LIVE_CREW_ME_SO_HORNY, TRACK_AREA_CODES_FEAT_NATE_DOGG_BY_LUDACRIS_CRATE_CLASSICS_RAP, TRACK_CARELESS_WHISPER, TRACK_VILLAGE_PEOPLE_SEX_OVER_THE_PHONE_OFFICIAL_MUSIC_VIDEO_1985, TRACK_BABY_GOT_BACK, TRACK_SALT_SHAKER, TRACK_ERIC_PRYDZ_CALL_ON_ME, NULL}}, */
+/*   }; */
+
+/*   String trackNumber = "0"; */
+
+/*   for (int i = 0; i < sizeof(mappings) / sizeof(mappings[0]); ++i) { */
+/*     for (int j = 0; mappings[i].numbers[j] != NULL; ++j) { */
+/*       if (number == mappings[i].numbers[j]) { */
+/*         int numTracks = 0; */
+/*         while (mappings[i].tracks[numTracks] != NULL) numTracks++; */
+/*         int randPick = random(0, numTracks); */
+/*         trackNumber = getProgmem(mappings[i].tracks[randPick]); */
+/*         return trackNumber; */
+/*       } */
+/*     } */
+/*   } */
+
+/*   return trackNumber; */
+/* } */
+
+
 String checkSpecialNumber(String number) {
     String trackNumber = "0";
     if (number == "8675309") {
         trackNumber = getProgmem(TRACK_TOMMY_TUTONE_867_5309JENNY);
-    } else if (number == "911" || number == "666") {
+    } else if (number == "77203") {
+        trackNumber = getProgmem(TRACK_TONY_BOOTH_LONESOME_7_7203);
+    } else if (number == "911") {
         trackNumber = getProgmem(TRACK_ORIGINAL_GHOSTBUSTERS_THEME_SONG);
+    } else if (number == "666") {
+        trackNumber = getProgmem(TRACK_THE_DEVIL_WENT_DOWN_TO_GEORGIA);
     } else if (number == "6060842") {
         trackNumber = getProgmem(TRACK_6060842);
+    } else if (number == "2222222") {
+        trackNumber = getProgmem(TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO);
+    } else if (number == "5551212") { // 5551212
+        trackNumber = getProgmem(TRACK_TIME_5551212);
+    } else if (number == "737542268") { // REPLICANT
+        trackNumber = getProgmem(TRACK_BLADE_RUNNER_O_MAIN_THEME_O_VANGELIS);
+    } else if (number == "737542268") { // GAFF
+        trackNumber = getProgmem(TRACK_GAFFYOURSELF);
+    } else if (number == "420") {
+        trackNumber = getProgmem(TRACK_DRAKE_HOTLINE_BLING_LYRICS);
+    } else if (number == "5338" || number == "6373" || number == "1337" || number == "31337") { // LEET NERD
+        trackNumber = getProgmem(TRACK_WEIRD_AL_YANKOVIC_WHITE_NERDY_OFFICIAL_4K_VIDEO);
+    } else if (number == "4653") { // HOLD
+        trackNumber = getProgmem(TRACK_CISCO_DEFAULT_HOLD_MUSIC_HQ_MONO_AUDIO_OPUS_NUMBER_1);
+    } else if (number == "333266" || number == "1010220") { // 1010220
+        trackNumber = getProgmem(TRACK_10_10_220_CHRISTOPHER_LLOYD_TAXI_COMMERCIAL_1999);
     } else if (number == "7779311") {
         trackNumber = getProgmem(TRACK_THE_TIME_777_9311_SINGLE_VERSION);
     } else if (number == "6345789") {
         trackNumber = getProgmem(TRACK_634_5789_SOULSVILLE_U_S_A_2007_REMASTER);
-    } else if (number == "2222222") {
-        trackNumber = getProgmem(TRACK_DE_LA_SOUL_RING_RING_RING_HA_HA_HEY_OFFICIAL_MUSIC_VIDEO);
-    } else if (number == "411") {
-        trackNumber = getProgmem(TRACK_SMOOTH_OPERATOR_REMASTERED);
-    } else if (number == "5108160458‬") {
+    } else if (number == "411" || number == "311") {
+        trackNumber = getProgmem(TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT);
+    } else if (number == "808") {
+        trackNumber = getProgmem(TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT);
+    } else if (number == "707") {
+        trackNumber = getProgmem(TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT);
+    } else if (number == "505") {
+        trackNumber = getProgmem(TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT);
+    } else if (number == "202") {
+        trackNumber = getProgmem(TRACK_GOLDENEYE_64_WATCH_PAUSE_MUSIC_UNCOMPRESSED_REMAKE_777PROJEKT);
+    } else if (number == "5108160458") {
         trackNumber = getProgmem(TRACK_SMOOTH_OPERATOR_REMASTERED);
     } else if (number == "0") {
         trackNumber = getProgmem(TRACK_SMOOTH_OPERATOR_REMASTERED);
-    } else if (number == "69") {
-        trackNumber = getProgmem(TRACK_CARELESS_WHISPER);
-    } else if (number == "420") {
-        trackNumber = getProgmem(TRACK_CARELESS_WHISPER);
-    } else if (number == "737542268") {
-        trackNumber = getProgmem(TRACK_BLADE_RUNNER_O_MAIN_THEME_O_VANGELIS);
     } else {
     }
     return trackNumber;
@@ -227,49 +375,60 @@ void playAdventure() {
 void loop() {
     int rotaryReading = digitalRead(rotaryInput);
     int resetReading = digitalRead(resetInput);
+    //if (tmpCounter == 1) {
+        //uncomment to monitor
+        //Serial.println(String(resetReading) + " " + String(resetLastState) + " " + String(resetLastTrueState));
+    //}
+    //tmpCounter++;
+    //tmpCounter = tmpCounter % 10000;
     if ((millis() - rotaryChangeTime) > stoppedDialingMs) {
         if (totalNumberDialed) {
             Serial.println("Dialing: " + totalNumber);
             MP3player.stopTrack();
-            String specialNumber = checkSpecialNumber(totalNumber);
-            if (specialNumber != "0") {
-                Serial.println("Special number");
-                setTotalNumberWithMemory(specialNumber);
-            } else if (currentGame == 0) {
-                // game not yet started
-                // choose from initial menu
-                int newRandom = getRandom();
-                // check to see if random track should be played
-                int i;
-                if (totalNumber == "1980") {
-                    Serial.println("1980 - start game");
-                    currentGame = 1;
-                    totalNumber = "2";
-                } else if (totalNumber == "1995" || totalNumber == "4775619" || totalNumber == "2134775619" || totalNumber == "7370583" || totalNumber == "7376583" || totalNumber == "776659" || totalNumber == "770059" || totalNumber == "200" || totalNumber == "266") { // SPOOKY, RES0LVE, B00, RESOLVE, BOO
-                    Serial.println("1995 - start game at top");
-                    currentGame = 1;
-                    totalNumber = "1";
-                } else if (totalNumber.length() < 3 && stringToNumber(totalNumber) < RANDOM_TRACK_LENGTH + 1) {
-                    int trackNumber = stringToNumber(totalNumber) - 1;
-                    if (trackNumber < 0) {
-                        trackNumber = 0;
-                    }
-                    Serial.println("Dialed number less than number of random tracks");
-                    loadTrackIntoBuffer(trackNumber);
-                    setTotalNumberWithMemoryFromBuffer();
-                } else if (newRandom < RANDOM_TRACK_LENGTH) {
-                    Serial.println("Playing random track " + newRandom);
-                    loadTrackIntoBuffer(newRandom);
-                    if (wasLastPlayed(string_buffer)) {
-                        Serial.println("Was already played, starting adventure");
-                        playAdventure();
-                        currentGame = 1;
-                    } else {
-                        setTotalNumberWithMemoryFromBuffer();
-                    }
+            if (currentGame == 0) {
+                String specialNumber = checkSpecialNumber(totalNumber);
+                if (specialNumber != "0") {
+                    Serial.println("Special number");
+                    setTotalNumberWithMemory(specialNumber);
                 } else {
-                    Serial.println("Fall through, start adventure");
-                    playAdventure();
+                    // game not yet started
+                    // choose from initial menu
+                    int newRandom = getRandom();
+                    // check to see if random track should be played
+                    int i;
+                    if (totalNumber == "1980") {
+                        Serial.println("1980 - start game");
+                        currentGame = 1;
+                        totalNumber = "2";
+                    } else if (totalNumber == "1995" || totalNumber == "4775619" || totalNumber == "2134775619" || totalNumber == "7370583" || totalNumber == "7376583" || totalNumber == "200" || totalNumber == "266" || totalNumber == "776659" || totalNumber =="2876" || totalNumber == "75292") { // BOO B00 BURN PLAYA NUMBER_ON_BLACK_PHONE SPOOKY, RES0LVE, B00, RESOLVE, BOO
+                        Serial.println("1995 - start game at top");
+                        currentGame = 1;
+                        totalNumber = "1";
+                    } else if (totalNumber.length() < 3 && stringToNumber(totalNumber) < RANDOM_TRACK_LENGTH + 1) {
+                        int trackNumber = stringToNumber(totalNumber) - 1;
+                        if (trackNumber < 0) {
+                            trackNumber = 0;
+                        }
+                        Serial.println("Dialed number less than number of random tracks");
+                        loadTrackIntoBuffer(trackNumber);
+                        setTotalNumberWithMemoryFromBuffer();
+                    } else if (newRandom < RANDOM_TRACK_LENGTH) {
+                        Serial.println("Playing random track " + newRandom);
+                        loadTrackIntoBuffer(newRandom);
+                        if (wasLastPlayed(string_buffer)) {
+                            Serial.println("Was already played, starting adventure");
+                            //playAdventure();
+                            currentGame = 1;
+                            totalNumber = "1";
+                        } else {
+                            setTotalNumberWithMemoryFromBuffer();
+                        }
+                    } else {
+                        Serial.println("Fall through, start adventure");
+                        //playAdventure();
+                        currentGame = 1;
+                        totalNumber = "1";
+                    }
                 }
             } else if (currentGame == 1) {
                 if (totalNumber == "0") {
@@ -279,7 +438,6 @@ void loop() {
                 }
             }
             Serial.println("Playing " + totalNumber);
-            Serial.println("Playing " + stringToNumber(totalNumber));
             MP3player.playTrack(stringToNumber(totalNumber));
             totalNumber = "";
             totalNumberDialed = false;
@@ -289,7 +447,6 @@ void loop() {
     if ((millis() - rotaryChangeTime) > dialHasFinishedRotatingAfterMs) {
         if (singleNumberDialed) {
             Serial.println("Dialed: " + count % 10);
-            MP3player.stopTrack();
             totalNumber = totalNumber + String(count % 10);
             Serial.println("Total number is: " + totalNumber);
             singleNumberDialed = false;
@@ -312,22 +469,83 @@ void loop() {
     }
     rotaryLastState = rotaryReading;
 
-    // reset the phone by hanging up
-    if (resetReading != resetLastState) {
-        resetChangeTime = millis();
-    }
-    if ((millis() - resetChangeTime) > debounceDelay) {
-        if (resetReading != resetLastStateTrue) {
-            resetLastStateTrue = resetReading;
-            if (resetLastStateTrue == LOW) {
+    // reset if the phone has been on the hook for a while
+    if (resetLastTrueState == HIGH && (millis() - resetChangeTime) > resetAfterMs) {
+        if (resetReading != resetLastTrueState) {
+            Serial.println("Eating it!");
+            resetLastTrueState = resetReading;
+            if (resetLastTrueState == LOW) {
+                Serial.println("We should start!");
                 Serial.println("Reset!");
                 MP3player.stopTrack();
                 currentGame = 0;
-                MP3player.playTrack(stringToNumber(getProgmem(TRACK_DEFCON_INTRO)));
+                totalNumber = "";
+                MP3player.playTrack(stringToNumber(getProgmem(TRACK_INTRO)));
             } else {
-                MP3player.stopTrack();
+
             }
         }
     }
+
+    if ((millis() - resetChangeTime) > resetAfterMs) {
+        if (singleNumberResetDialed) {
+            if (resetLastTrueState == HIGH) { // phone is on the hook (only necessary for black telephone)
+                Serial.println("Phone on hook, stopping");
+                singleNumberResetDialed = false;
+                count = 0;
+                resetCount = 0;
+                MP3player.stopTrack();
+            } else {
+                Serial.println("Dialed reset: " + resetCount % 10);
+                totalNumber = totalNumber + String(resetCount % 10);
+                Serial.println("Total number reset is: " + totalNumber);
+                singleNumberResetDialed = false;
+                totalNumberResetDialed = true;
+                //totalNumberDialed = true;
+                resetCount = 0;
+            }
+        }
+    }
+
+    if ((millis() - resetChangeTime) > stoppedDialingMs) {
+        if (totalNumberResetDialed) {
+            if (resetLastTrueState == HIGH) { // phone is on the hook (only necessary for black telephone)
+                Serial.println("Phone on hook, stopping");
+                totalNumberResetDialed = false;
+                count = 0;
+                resetCount = 0;
+                MP3player.stopTrack();
+            } else {
+                Serial.println("Total number reset2 is: " + totalNumber);
+                singleNumberResetDialed = false;
+                totalNumberDialed = true;
+                totalNumberResetDialed = false;
+                count = 0;
+                resetCount = 0;
+              }
+        }
+    }
+
+    if (resetReading != resetLastState) {
+        resetChangeTime = millis();
+    }
+
+    if ((millis() - resetChangeTime) > resetDebounceDelay) {
+        if (resetReading != resetLastTrueState) {
+            resetLastTrueState = resetReading;
+            if (resetLastTrueState == HIGH) {
+                resetCount++;
+                Serial.println("Incrementing count reset!");
+                singleNumberResetDialed = true;
+            }
+        }
+    }
+
     resetLastState = resetReading;
+
+    // seems necessary for Black phone
+    if (!activated && resetLastState == LOW) {
+        MP3player.playTrack(stringToNumber(getProgmem(TRACK_INTRO)));
+        activated = true;
+    }
 }
